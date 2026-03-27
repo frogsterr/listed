@@ -1,24 +1,26 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import NavBar from '@/components/NavBar'
 
-const inter = Inter({
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "LISTED — JTS Course Reviews",
-  description: "Course reviews for Jewish Theological Seminary students",
-};
+  title: 'LISTED — JTS Course Reviews',
+  description: 'Anonymous course and professor reviews for JTS List College students.',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en" className={`${inter.className} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en">
+      <body className={`${inter.className} min-h-screen bg-cream`}>
+        <NavBar />
+        <main>{children}</main>
+      </body>
     </html>
-  );
+  )
 }
