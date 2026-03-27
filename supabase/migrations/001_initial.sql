@@ -4,20 +4,20 @@ create extension if not exists "pgcrypto";
 -- Professors
 create table professors (
   id          uuid primary key default gen_random_uuid(),
-  name        text not null,
+  name        text not null check (char_length(name) <= 200),
   created_at  timestamptz default now()
 );
 
 -- Classes
 create table classes (
   id            uuid primary key default gen_random_uuid(),
-  title         text not null,
+  title         text not null check (char_length(title) <= 300),
   category      text,
   professor_id  uuid references professors(id) on delete set null,
   meeting_days  text[] default '{}',
   start_time    time,
   end_time      time,
-  semester      text not null,
+  semester      text not null check (semester ~ '^(Fall|Spring) \d{4}$'),
   created_at    timestamptz default now()
 );
 
@@ -27,9 +27,9 @@ create table reviews (
   class_id        uuid references classes(id) on delete cascade not null,
   overall_rating  int not null check (overall_rating between 1 and 5),
   workload_rating int not null check (workload_rating between 1 and 5),
-  comment         text,
+  comment         text check (char_length(comment) <= 5000),
   tags            text[] default '{}',
-  semester        text not null,
+  semester        text not null check (semester ~ '^(Fall|Spring) \d{4}$'),
   helpful_count   int default 0,
   created_at      timestamptz default now()
 );
@@ -48,4 +48,6 @@ create index on classes(professor_id);
 create index on classes(semester);
 create index on reviews(class_id);
 create index on reviews(helpful_count desc);
-create index on review_votes(review_id, voter_key);
+create index on reviews(class_id, created_at desc);
+create index on reviews(class_id, helpful_count desc);
+create index on reviews(semester, class_id);
