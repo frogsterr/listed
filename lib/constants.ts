@@ -2,11 +2,7 @@ export const CURRENT_SEMESTER = 'Spring 2026'
 
 export const SEMESTERS = [
   'Spring 2026',
-  'Fall 2025',
-  'Spring 2025',
-  'Fall 2024',
-  'Spring 2024',
-  'Fall 2023',
+  'Fall 2026',
 ]
 
 export const WORKLOAD_LABELS: Record<number, string> = {
@@ -51,5 +47,5 @@ export const TAGS = [
   },
 ]
 
-export const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as const
+export const DAYS = ['Mon', 'Tue', 'Wed', 'Thu'] as const
 export type Day = typeof DAYS[number]

@@ -24,9 +24,10 @@ interface Props {
   review: Review
   classId: string
   highlighted?: boolean
+  professorName?: string
 }
 
-export default function ReviewCard({ review, classId, highlighted = false }: Props) {
+export default function ReviewCard({ review, classId, highlighted = false, professorName }: Props) {
   const [count, setCount] = useState(review.helpful_count)
   const [voted, setVoted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -61,6 +62,12 @@ export default function ReviewCard({ review, classId, highlighted = false }: Pro
         <StarDisplay rating={review.overall_rating} size="md" />
         <span className="text-xs text-gray-400">{review.semester}</span>
       </div>
+
+      {professorName && (
+        <div className="text-xs text-gray-500">
+          <span className="font-semibold text-gray-600">{professorName}</span>
+        </div>
+      )}
 
       {review.comment && (
         <p className="text-sm text-gray-700 leading-relaxed">{review.comment}</p>

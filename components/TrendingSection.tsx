@@ -8,40 +8,32 @@ export default async function TrendingSection() {
 
   const { data: reviews } = await supabase
     .from('reviews')
-    .select('class_id, overall_rating')
+    .select('class_id, overall_rating, class:classes(*, professor:professors(id, name, created_at))')
     .eq('semester', CURRENT_SEMESTER)
 
   if (!reviews || reviews.length === 0) return null
 
-  const map = new Map<string, { sum: number; count: number }>()
+  const map = new Map<string, { sum: number; count: number; cls: unknown }>()
   for (const r of reviews) {
-    const existing = map.get(r.class_id) ?? { sum: 0, count: 0 }
-    map.set(r.class_id, { sum: existing.sum + r.overall_rating, count: existing.count + 1 })
+    const existing = map.get(r.class_id)
+    map.set(r.class_id, {
+      sum: (existing?.sum ?? 0) + r.overall_rating,
+      count: (existing?.count ?? 0) + 1,
+      cls: (r as unknown as { class: unknown }).class ?? existing?.cls,
+    })
   }
 
-  const qualifiedIds = [...map.entries()]
+  const ranked: ClassWithStats[] = [...map.entries()]
     .filter(([, v]) => v.count >= 2)
     .sort((a, b) => b[1].sum / b[1].count - a[1].sum / a[1].count)
     .slice(0, 5)
-    .map(([id]) => id)
-
-  if (qualifiedIds.length === 0) return null
-
-  const { data: classes } = await supabase
-    .from('classes')
-    .select('*, professor:professors(id, name, created_at)')
-    .in('id', qualifiedIds)
-
-  if (!classes) return null
-
-  const ranked: ClassWithStats[] = qualifiedIds
-    .map(id => {
-      const cls = classes.find(c => c.id === id)
-      if (!cls) return null
-      const stats = map.get(id)!
-      return { ...cls, avg_overall: stats.sum / stats.count, review_count: stats.count }
+    .map(([, v]) => {
+      const cls = v.cls as Record<string, unknown>
+      return { ...cls, avg_overall: v.sum / v.count, review_count: v.count } as ClassWithStats
     })
-    .filter(Boolean) as ClassWithStats[]
+    .filter(c => c.id)
+
+  if (ranked.length === 0) return null
 
   return (
     <div>

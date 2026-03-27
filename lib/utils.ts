@@ -1,6 +1,8 @@
 export function formatTime(time: string): string {
+  if (!time || !time.includes(':')) return ''
   const [hourStr, minuteStr] = time.split(':')
   let hour = parseInt(hourStr, 10)
+  if (isNaN(hour)) return ''
   const minute = minuteStr ?? '00'
   const period = hour >= 12 ? 'pm' : 'am'
   if (hour > 12) hour -= 12

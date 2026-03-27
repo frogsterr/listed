@@ -7,9 +7,10 @@ import type { Review } from '@/lib/types'
 interface Props {
   reviews: Review[]
   classId: string
+  classIdToProfessor?: Record<string, string>
 }
 
-export default function ReviewList({ reviews, classId }: Props) {
+export default function ReviewList({ reviews, classId, classIdToProfessor }: Props) {
   const [sort, setSort] = useState<'recent' | 'helpful'>('recent')
 
   const sorted = [...reviews].sort((a, b) => {
@@ -34,7 +35,12 @@ export default function ReviewList({ reviews, classId }: Props) {
       </div>
       <div className="flex flex-col gap-3">
         {sorted.map(r => (
-          <ReviewCard key={r.id} review={r} classId={classId} />
+          <ReviewCard
+            key={r.id}
+            review={r}
+            classId={classId}
+            professorName={classIdToProfessor?.[r.class_id]}
+          />
         ))}
       </div>
     </div>

@@ -19,7 +19,7 @@ export default async function SchedulePage({ searchParams }: PageProps) {
     .not('start_time', 'is', null)
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6">
+    <div className="w-full px-4 py-6">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
         <h1 className="text-lg font-bold text-gray-900">Weekly Schedule</h1>
         <div className="flex gap-2 flex-wrap">
