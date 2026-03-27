@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'LISTED — JTS Course Reviews',
   description: 'Anonymous course and professor reviews for JTS List College students.',
+  icons: {
+    icon: '/favicon.png',
+  },
 }
 
 export default function RootLayout({
