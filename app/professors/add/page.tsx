@@ -16,10 +16,9 @@ export default function AddProfessorPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const supabase = createClient()
-
   async function handleSearch() {
     if (!searchQuery.trim()) return
+    const supabase = createClient()
     const { data } = await supabase
       .from('professors')
       .select('id, name')

@@ -28,10 +28,9 @@ export default function AddClassPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const supabase = createClient()
-
   async function handleSearch() {
     if (!searchQuery.trim()) return
+    const supabase = createClient()
     const { data } = await supabase
       .from('classes')
       .select('id, title, semester')
@@ -46,6 +45,7 @@ export default function AddClassPage() {
     setSelectedProfId('')
     setSelectedProfName('')
     if (!q.trim()) { setProfResults([]); return }
+    const supabase = createClient()
     const { data } = await supabase
       .from('professors')
       .select('id, name')
