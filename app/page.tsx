@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import HeroSearch from '@/components/HeroSearch'
+import type { Suggestion } from '@/components/HeroSearch'
 import TrendingSection from '@/components/TrendingSection'
 import TopProfessorsSection from '@/components/TopProfessorsSection'
 
@@ -12,14 +13,14 @@ export default async function HomePage() {
   const supabase = await createClient()
 
   const [{ data: classData }, { data: profData }] = await Promise.all([
-    supabase.from('classes').select('title').order('title'),
-    supabase.from('professors').select('id, name').order('name'),
+    supabase.from('classes').select('title'),
+    supabase.from('professors').select('id, name'),
   ])
 
-  const classSuggestions = [...new Set((classData ?? []).map((c: { title: string }) => c.title))]
+  const classSuggestions: Suggestion[] = [...new Set((classData ?? []).map((c: { title: string }) => c.title))]
     .map(title => ({ label: title, href: `/classes?q=${encodeURIComponent(title)}` }))
 
-  const profSuggestions = (profData ?? [])
+  const profSuggestions: Suggestion[] = (profData ?? [])
     .map((p: { id: string; name: string }) => ({ label: p.name, href: `/professors/${p.id}` }))
 
   const suggestions = [...classSuggestions, ...profSuggestions]

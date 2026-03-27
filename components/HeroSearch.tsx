@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-interface Suggestion {
+export interface Suggestion {
   label: string
   href: string
 }
