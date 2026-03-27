@@ -10,8 +10,20 @@ function SectionSkeleton() {
 
 export default async function HomePage() {
   const supabase = await createClient()
-  const { data } = await supabase.from('classes').select('title').order('title')
-  const suggestions = [...new Set((data ?? []).map((c: { title: string }) => c.title))].sort() as string[]
+
+  const [{ data: classData }, { data: profData }] = await Promise.all([
+    supabase.from('classes').select('title').order('title'),
+    supabase.from('professors').select('id, name').order('name'),
+  ])
+
+  const classSuggestions = [...new Set((classData ?? []).map((c: { title: string }) => c.title))]
+    .map(title => ({ label: title, href: `/classes?q=${encodeURIComponent(title)}` }))
+
+  const profSuggestions = (profData ?? [])
+    .map((p: { id: string; name: string }) => ({ label: p.name, href: `/professors/${p.id}` }))
+
+  const suggestions = [...classSuggestions, ...profSuggestions]
+    .sort((a, b) => a.label.localeCompare(b.label))
 
   return (
     <>

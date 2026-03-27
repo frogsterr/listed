@@ -3,8 +3,13 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
+interface Suggestion {
+  label: string
+  href: string
+}
+
 interface Props {
-  suggestions: string[]
+  suggestions: Suggestion[]
 }
 
 function SearchInput({
@@ -15,7 +20,7 @@ function SearchInput({
   placeholder,
   prefix,
 }: {
-  suggestions: string[]
+  suggestions: Suggestion[]
   inputClassName: string
   wrapperClassName?: string
   dropdownClassName: string
@@ -29,11 +34,14 @@ function SearchInput({
   const containerRef = useRef<HTMLDivElement>(null)
 
   const matches = value.trim().length > 0
-    ? suggestions.filter(s => s.toLowerCase().includes(value.toLowerCase())).slice(0, 8)
+    ? suggestions.filter(s => s.label.toLowerCase().includes(value.toLowerCase())).slice(0, 8)
     : []
 
-  function navigate(q: string) {
-    router.push(q.trim() ? `/classes?q=${encodeURIComponent(q.trim())}` : '/classes')
+  function navigate(suggestion: Suggestion | null) {
+    const href = suggestion
+      ? suggestion.href
+      : value.trim() ? `/classes?q=${encodeURIComponent(value.trim())}` : '/classes'
+    router.push(href)
     setOpen(false)
     setValue('')
   }
@@ -41,7 +49,7 @@ function SearchInput({
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === 'ArrowDown') { e.preventDefault(); setHighlighted(h => Math.min(h + 1, matches.length - 1)) }
     else if (e.key === 'ArrowUp') { e.preventDefault(); setHighlighted(h => Math.max(h - 1, -1)) }
-    else if (e.key === 'Enter') { e.preventDefault(); navigate(highlighted >= 0 ? matches[highlighted] : value) }
+    else if (e.key === 'Enter') { e.preventDefault(); navigate(highlighted >= 0 ? matches[highlighted] : null) }
     else if (e.key === 'Escape') setOpen(false)
   }
 
@@ -81,14 +89,14 @@ function SearchInput({
         <ul className={dropdownClassName}>
           {matches.map((s, i) => (
             <li
-              key={s}
-              onMouseDown={() => { setValue(s); navigate(s) }}
+              key={s.href}
+              onMouseDown={() => { navigate(s) }}
               onMouseEnter={() => setHighlighted(i)}
               className={`px-5 py-3 text-sm cursor-pointer ${
                 i === highlighted ? 'bg-cream-hover text-primary font-semibold' : 'text-gray-700 hover:bg-cream-hover'
               }`}
             >
-              {s}
+              {s.label}
             </li>
           ))}
         </ul>
