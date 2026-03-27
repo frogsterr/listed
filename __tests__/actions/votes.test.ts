@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { generateVoterKey, isValidVoterKey } from '@/actions/votes'
+import { generateVoterKey, isValidVoterKey } from '@/lib/utils'
 
 describe('generateVoterKey', () => {
   it('returns a non-empty string', () => {

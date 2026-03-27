@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateReviewInput } from '@/actions/reviews'
+import { validateReviewInput } from '@/lib/utils'
 
 describe('validateReviewInput', () => {
   const valid = {

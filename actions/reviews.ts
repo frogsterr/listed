@@ -2,23 +2,8 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-
-interface ReviewInput {
-  class_id: string
-  overall_rating: number
-  workload_rating: number
-  semester: string
-  comment?: string
-  tags?: string[]
-}
-
-export function validateReviewInput(input: ReviewInput): string | null {
-  if (!input.class_id) return 'class is required'
-  if (input.overall_rating < 1 || input.overall_rating > 5) return 'rating must be 1–5'
-  if (input.workload_rating < 1 || input.workload_rating > 5) return 'workload must be 1–5'
-  if (!input.semester) return 'semester is required'
-  return null
-}
+import { validateReviewInput } from '@/lib/utils'
+import type { ReviewInput } from '@/lib/utils'
 
 export async function submitReview(input: ReviewInput): Promise<{ error: string | null }> {
   const error = validateReviewInput(input)

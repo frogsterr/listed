@@ -26,3 +26,28 @@ export function starsArray(rating: number): ('full' | 'empty')[] {
 export function roundToHalf(num: number): number {
   return Math.round(num * 2) / 2
 }
+
+export function generateVoterKey(): string {
+  return `${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+}
+
+export function isValidVoterKey(key: string): boolean {
+  return typeof key === 'string' && key.length > 0 && key.length <= 128
+}
+
+export interface ReviewInput {
+  class_id: string
+  overall_rating: number
+  workload_rating: number
+  semester: string
+  comment?: string
+  tags?: string[]
+}
+
+export function validateReviewInput(input: ReviewInput): string | null {
+  if (!input.class_id) return 'class is required'
+  if (input.overall_rating < 1 || input.overall_rating > 5) return 'rating must be 1–5'
+  if (input.workload_rating < 1 || input.workload_rating > 5) return 'workload must be 1–5'
+  if (!input.semester) return 'semester is required'
+  return null
+}

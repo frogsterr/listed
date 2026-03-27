@@ -2,14 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-
-export function generateVoterKey(): string {
-  return `${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
-}
-
-export function isValidVoterKey(key: string): boolean {
-  return typeof key === 'string' && key.length > 0 && key.length <= 128
-}
+import { isValidVoterKey } from '@/lib/utils'
 
 export async function upvoteReview(
   reviewId: string,
