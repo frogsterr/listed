@@ -1,0 +1,105 @@
+<h2>Review Form + Tags</h2>
+<p class="subtitle">Multi-select tags — tap any that apply. Does this tag set feel right?</p>
+
+<div style="max-width:420px;margin:20px auto;font-family:system-ui,sans-serif;">
+  <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.12);background:white;">
+
+    <div style="background:#e8650a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-weight:700;font-size:13px;">Write a Review</div>
+        <div style="font-size:10px;opacity:0.85;margin-top:1px;">Introduction to Talmud · Rabbi Schwartz</div>
+      </div>
+      <div style="font-size:18px;opacity:0.7;cursor:pointer;">✕</div>
+    </div>
+
+    <div style="padding:20px;display:flex;flex-direction:column;gap:18px;">
+
+      <!-- Semester -->
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">When did you take this?</div>
+        <select style="width:100%;border:1.5px solid #f0ddd0;border-radius:8px;padding:9px 12px;font-size:12px;color:#333;background:#fff8f2;">
+          <option>Fall 2025</option><option>Spring 2025</option><option>Fall 2024</option>
+        </select>
+      </div>
+
+      <!-- Overall rating -->
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Overall Rating</div>
+        <div style="display:flex;gap:8px;">
+          <div style="flex:1;border:1.5px solid #f0ddd0;border-radius:8px;padding:10px;text-align:center;background:#fff8f2;cursor:pointer;"><div style="font-size:16px;">★</div><div style="font-size:9px;color:#aaa;">1</div></div>
+          <div style="flex:1;border:1.5px solid #f0ddd0;border-radius:8px;padding:10px;text-align:center;background:#fff8f2;cursor:pointer;"><div style="font-size:16px;">★★</div><div style="font-size:9px;color:#aaa;">2</div></div>
+          <div style="flex:1;border:1.5px solid #f0ddd0;border-radius:8px;padding:10px;text-align:center;background:#fff8f2;cursor:pointer;"><div style="font-size:16px;">★★★</div><div style="font-size:9px;color:#aaa;">3</div></div>
+          <div style="flex:1;border:1.5px solid #f0ddd0;border-radius:8px;padding:10px;text-align:center;background:#fff8f2;cursor:pointer;"><div style="font-size:16px;">★★★★</div><div style="font-size:9px;color:#aaa;">4</div></div>
+          <div style="flex:1;border:2px solid #e8650a;border-radius:8px;padding:10px;text-align:center;background:#fff3ea;cursor:pointer;"><div style="font-size:16px;color:#e8650a;">★★★★★</div><div style="font-size:9px;color:#e8650a;font-weight:600;">5</div></div>
+        </div>
+      </div>
+
+      <!-- Workload -->
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Workload</div>
+        <div style="display:flex;gap:6px;">
+          <div style="flex:1;border:1.5px solid #f0ddd0;border-radius:8px;padding:9px 4px;text-align:center;background:#fff8f2;cursor:pointer;font-size:10px;color:#888;">Very<br/>Light</div>
+          <div style="flex:1;border:1.5px solid #f0ddd0;border-radius:8px;padding:9px 4px;text-align:center;background:#fff8f2;cursor:pointer;font-size:10px;color:#888;">Light</div>
+          <div style="flex:1;border:1.5px solid #f0ddd0;border-radius:8px;padding:9px 4px;text-align:center;background:#fff8f2;cursor:pointer;font-size:10px;color:#888;">Medium</div>
+          <div style="flex:1;border:2px solid #e8650a;border-radius:8px;padding:9px 4px;text-align:center;background:#fff3ea;cursor:pointer;font-size:10px;color:#e8650a;font-weight:600;">Heavy</div>
+          <div style="flex:1;border:1.5px solid #f0ddd0;border-radius:8px;padding:9px 4px;text-align:center;background:#fff8f2;cursor:pointer;font-size:10px;color:#888;">Very<br/>Heavy</div>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Tags <span style="color:#bbb;font-weight:400;text-transform:none;">(pick all that apply)</span></div>
+
+        <div style="margin-bottom:8px;">
+          <div style="font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Professor Style</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="background:#fff3ea;border:1.5px solid #e8650a;color:#e8650a;border-radius:99px;padding:5px 11px;font-size:10px;font-weight:600;cursor:pointer;">Harsh Grader</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Easy Grader</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Engaging Lectures</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Dry Lectures</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Very Accessible</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Hard to Reach</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom:8px;">
+          <div style="font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Time Commitment</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">&lt;2 hrs/week</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">2–5 hrs/week</span>
+            <span style="background:#fff3ea;border:1.5px solid #e8650a;color:#e8650a;border-radius:99px;padding:5px 11px;font-size:10px;font-weight:600;cursor:pointer;">5–10 hrs/week</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">10–20 hrs/week</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">20+ hrs/week</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Class Vibe</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Attendance Required</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Skip-Friendly</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Lots of Discussion</span>
+            <span style="background:#fff8f2;border:1.5px solid #f0ddd0;color:#666;border-radius:99px;padding:5px 11px;font-size:10px;cursor:pointer;">Mostly Lecture</span>
+            <span style="background:#fff3ea;border:1.5px solid #e8650a;color:#e8650a;border-radius:99px;padding:5px 11px;font-size:10px;font-weight:600;cursor:pointer;">Would Retake</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments -->
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Your Review <span style="color:#bbb;font-weight:400;text-transform:none;">(anonymous)</span></div>
+        <div style="border:1.5px solid #f0ddd0;border-radius:8px;padding:10px 12px;background:#fff8f2;min-height:80px;font-size:11px;color:#aaa;">Share your honest experience...</div>
+      </div>
+
+      <!-- Submit -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:8px;background:#fff3ea;border-radius:8px;padding:10px 12px;">
+          <span style="font-size:14px;">🔒</span>
+          <span style="font-size:10px;color:#888;">Your review is completely anonymous. No account needed.</span>
+        </div>
+        <div style="background:#e8650a;color:white;border-radius:8px;padding:12px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;">Submit Review</div>
+      </div>
+
+    </div>
+  </div>
+</div>

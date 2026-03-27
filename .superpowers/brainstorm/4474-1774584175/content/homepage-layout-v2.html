@@ -1,0 +1,189 @@
+<h2>Homepage Layout</h2>
+<p class="subtitle">Each mockup shows a full vertical page. Which direction feels right?</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:16px;">
+
+  <!-- Option A -->
+  <div class="option" data-choice="a" onclick="toggleSelect(this)" style="display:block;padding:0;overflow:hidden;border-radius:8px;">
+    <div style="background:#e8650a;color:white;padding:8px 12px;font-weight:700;font-size:12px;display:flex;justify-content:space-between;">
+      <span>JTS Reviews</span>
+      <span style="font-size:10px;opacity:0.8;font-weight:400;">Option A</span>
+    </div>
+    <div style="background:#fff8f0;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:420px;">
+      <!-- Hero search -->
+      <div style="background:linear-gradient(160deg,#e8650a,#f5a05a);border-radius:8px;padding:20px;text-align:center;color:white;">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Find your next class</div>
+        <div style="font-size:9px;opacity:0.85;margin-bottom:10px;">Honest reviews from JTS students</div>
+        <div style="background:white;border-radius:6px;padding:7px 10px;color:#aaa;font-size:10px;text-align:left;">🔍 Search classes or professors...</div>
+      </div>
+      <!-- 3 tiles -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+        <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:8px;text-align:center;">
+          <div style="font-size:16px;">🏆</div>
+          <div style="font-size:8px;font-weight:600;color:#444;margin-top:3px;">Top Profs</div>
+        </div>
+        <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:8px;text-align:center;">
+          <div style="font-size:16px;">🔥</div>
+          <div style="font-size:8px;font-weight:600;color:#444;margin-top:3px;">Trending</div>
+        </div>
+        <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:8px;text-align:center;">
+          <div style="font-size:16px;">📅</div>
+          <div style="font-size:8px;font-weight:600;color:#444;margin-top:3px;">Schedule</div>
+        </div>
+      </div>
+      <!-- leaderboard section -->
+      <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:8px;">
+        <div style="font-size:9px;font-weight:700;color:#e8650a;margin-bottom:6px;text-transform:uppercase;">🔥 Trending This Semester</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;padding:4px 0;border-bottom:1px solid #f5ede6;">
+            <span style="font-weight:600;">Talmud 101</span><span style="color:#e8650a;font-weight:600;">⭐ 4.8</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;padding:4px 0;border-bottom:1px solid #f5ede6;">
+            <span style="font-weight:600;">Bible Narratives</span><span style="color:#e8650a;font-weight:600;">⭐ 4.6</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;padding:4px 0;">
+            <span style="font-weight:600;">Jewish Philosophy</span><span style="color:#e8650a;font-weight:600;">⭐ 4.5</span>
+          </div>
+        </div>
+      </div>
+      <!-- top profs section -->
+      <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:8px;">
+        <div style="font-size:9px;font-weight:700;color:#e8650a;margin-bottom:6px;text-transform:uppercase;">🏆 Top Professors</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;padding:4px 0;border-bottom:1px solid #f5ede6;">
+            <span style="font-weight:600;">Rabbi Schwartz</span><span style="color:#e8650a;font-weight:600;">⭐ 4.9</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;padding:4px 0;">
+            <span style="font-weight:600;">Dr. Cohen</span><span style="color:#e8650a;font-weight:600;">⭐ 4.7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:#f5ede6;padding:8px 12px;font-size:11px;font-weight:600;color:#555;">A — Hero Search + Leaderboards below</div>
+  </div>
+
+  <!-- Option B -->
+  <div class="option" data-choice="b" onclick="toggleSelect(this)" style="display:block;padding:0;overflow:hidden;border-radius:8px;">
+    <div style="background:#e8650a;color:white;padding:8px 12px;font-weight:700;font-size:12px;display:flex;justify-content:space-between;align-items:center;">
+      <span>JTS Reviews</span>
+      <div style="background:rgba(255,255,255,0.2);border-radius:4px;padding:3px 8px;font-size:10px;font-weight:400;">🔍 Search</div>
+    </div>
+    <div style="background:#fff8f0;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:420px;">
+      <!-- Stats bar -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+        <div style="background:#e8650a;color:white;border-radius:6px;padding:8px;text-align:center;">
+          <div style="font-size:16px;font-weight:700;">128</div>
+          <div style="font-size:8px;opacity:0.85;">Reviews</div>
+        </div>
+        <div style="background:#e8650a;color:white;border-radius:6px;padding:8px;text-align:center;">
+          <div style="font-size:16px;font-weight:700;">47</div>
+          <div style="font-size:8px;opacity:0.85;">Classes</div>
+        </div>
+        <div style="background:#e8650a;color:white;border-radius:6px;padding:8px;text-align:center;">
+          <div style="font-size:16px;font-weight:700;">22</div>
+          <div style="font-size:8px;opacity:0.85;">Professors</div>
+        </div>
+      </div>
+      <!-- Two columns side by side -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
+        <!-- Left col -->
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:9px;font-weight:700;color:#e8650a;text-transform:uppercase;">🔥 Trending Classes</div>
+          <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:7px;">
+            <div style="font-size:10px;font-weight:600;">Talmud 101</div>
+            <div style="font-size:8px;color:#888;">R. Schwartz</div>
+            <div style="font-size:8px;color:#e8650a;margin-top:2px;">⭐ 4.8 · 12 reviews</div>
+          </div>
+          <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:7px;">
+            <div style="font-size:10px;font-weight:600;">Bible Narratives</div>
+            <div style="font-size:8px;color:#888;">Dr. Cohen</div>
+            <div style="font-size:8px;color:#e8650a;margin-top:2px;">⭐ 4.6 · 9 reviews</div>
+          </div>
+          <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:7px;">
+            <div style="font-size:10px;font-weight:600;">Jewish Philosophy</div>
+            <div style="font-size:8px;color:#888;">Prof. Levy</div>
+            <div style="font-size:8px;color:#e8650a;margin-top:2px;">⭐ 4.5 · 7 reviews</div>
+          </div>
+        </div>
+        <!-- Right col -->
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:9px;font-weight:700;color:#e8650a;text-transform:uppercase;">🏆 Top Professors</div>
+          <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:7px;">
+            <div style="font-size:10px;font-weight:600;">Rabbi Schwartz</div>
+            <div style="font-size:8px;color:#888;">Talmud · Halacha</div>
+            <div style="font-size:8px;color:#e8650a;margin-top:2px;">⭐ 4.9 · 42 reviews</div>
+          </div>
+          <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:7px;">
+            <div style="font-size:10px;font-weight:600;">Dr. Cohen</div>
+            <div style="font-size:8px;color:#888;">Bible · History</div>
+            <div style="font-size:8px;color:#e8650a;margin-top:2px;">⭐ 4.7 · 38 reviews</div>
+          </div>
+          <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:7px;">
+            <div style="font-size:10px;font-weight:600;">Prof. Levy</div>
+            <div style="font-size:8px;color:#888;">Philosophy</div>
+            <div style="font-size:8px;color:#e8650a;margin-top:2px;">⭐ 4.6 · 31 reviews</div>
+          </div>
+        </div>
+      </div>
+      <!-- Recent reviews -->
+      <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:8px;">
+        <div style="font-size:9px;font-weight:700;color:#e8650a;margin-bottom:5px;text-transform:uppercase;">💬 Recently Reviewed</div>
+        <div style="font-size:9px;color:#555;font-style:italic;">"Great class, very engaging..." — Talmud 101</div>
+      </div>
+    </div>
+    <div style="background:#f5ede6;padding:8px 12px;font-size:11px;font-weight:600;color:#555;">B — Dashboard: stats + two-column feed</div>
+  </div>
+
+  <!-- Option C -->
+  <div class="option" data-choice="c" onclick="toggleSelect(this)" style="display:block;padding:0;overflow:hidden;border-radius:8px;">
+    <div style="background:#e8650a;color:white;padding:8px 12px;font-size:10px;display:flex;gap:12px;align-items:center;">
+      <span style="font-weight:700;font-size:12px;">JTS Reviews</span>
+      <span>Classes</span><span>Professors</span><span>Schedule</span>
+    </div>
+    <div style="background:#fff8f0;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:420px;">
+      <!-- Hero CTA -->
+      <div style="background:linear-gradient(160deg,#e8650a,#f5a05a);border-radius:8px;padding:18px;color:white;text-align:center;">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">JTS Course Reviews</div>
+        <div style="font-size:9px;opacity:0.9;margin-bottom:12px;">Anonymous reviews from your peers</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="background:white;color:#e8650a;border-radius:5px;padding:7px;font-size:10px;font-weight:600;text-align:center;">Browse All Classes →</div>
+          <div style="background:rgba(255,255,255,0.15);color:white;border-radius:5px;padding:7px;font-size:10px;text-align:center;border:1px solid rgba(255,255,255,0.3);">View Weekly Schedule →</div>
+        </div>
+      </div>
+      <!-- Leaderboard vertical list -->
+      <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:8px;">
+        <div style="font-size:9px;font-weight:700;color:#e8650a;margin-bottom:6px;text-transform:uppercase;">🏆 Class + Professor Leaderboard</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:9px;padding:4px 0;border-bottom:1px solid #f5ede6;">
+            <span style="color:#e8650a;font-weight:700;width:14px;">#1</span>
+            <span style="flex:1;font-weight:600;">Talmud 101</span>
+            <span style="color:#888;">R. Schwartz</span>
+            <span style="color:#e8650a;font-weight:600;">⭐ 4.8</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:9px;padding:4px 0;border-bottom:1px solid #f5ede6;">
+            <span style="color:#e8650a;font-weight:700;width:14px;">#2</span>
+            <span style="flex:1;font-weight:600;">Bible Narratives</span>
+            <span style="color:#888;">Dr. Cohen</span>
+            <span style="color:#e8650a;font-weight:600;">⭐ 4.6</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:9px;padding:4px 0;">
+            <span style="color:#e8650a;font-weight:700;width:14px;">#3</span>
+            <span style="flex:1;font-weight:600;">Jewish Philosophy</span>
+            <span style="color:#888;">Prof. Levy</span>
+            <span style="color:#e8650a;font-weight:600;">⭐ 4.5</span>
+          </div>
+        </div>
+      </div>
+      <!-- Recent activity -->
+      <div style="background:white;border:1px solid #f0ddd0;border-radius:6px;padding:8px;">
+        <div style="font-size:9px;font-weight:700;color:#e8650a;margin-bottom:5px;text-transform:uppercase;">💬 Latest Reviews</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="font-size:9px;color:#555;font-style:italic;padding:3px 0;border-bottom:1px solid #f5ede6;">"Incredible depth, highly recommend" — Talmud 101</div>
+          <div style="font-size:9px;color:#555;font-style:italic;padding:3px 0;">"Prof Cohen makes it click" — Bible Narratives</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:#f5ede6;padding:8px 12px;font-size:11px;font-weight:600;color:#555;">C — Nav + Hero CTAs + ranked leaderboard</div>
+  </div>
+
+</div>
