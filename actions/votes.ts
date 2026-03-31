@@ -40,6 +40,7 @@ export async function downvoteReview(
 
   const supabase = await createClient()
 
+  // Use the atomic RPC that handles dedup and increment together
   const { data, error } = await supabase.rpc('increment_unhelpful_count', {
     review_id: reviewId,
     voter_key: voterKey,
