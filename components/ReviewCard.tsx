@@ -44,7 +44,8 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
     if (voted || upvoteLoading) return
     setUpvoteLoading(true)
     const voterKey = getOrCreateVoterKey()
-    const { alreadyVoted } = await upvoteReview(review.id, voterKey, classId)
+    const { error, alreadyVoted } = await upvoteReview(review.id, voterKey, classId)
+    if (error) { console.error('upvote failed:', error); setUpvoteLoading(false); return }
     if (!alreadyVoted) {
       setHelpfulCount(c => c + 1)
       localStorage.setItem(`voted_${review.id}`, '1')
@@ -59,7 +60,8 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
     if (downvoted || downvoteLoading) return
     setDownvoteLoading(true)
     const voterKey = getOrCreateVoterKey()
-    const { alreadyVoted } = await downvoteReview(review.id, voterKey, classId)
+    const { error, alreadyVoted } = await downvoteReview(review.id, voterKey, classId)
+    if (error) { console.error('downvote failed:', error); setDownvoteLoading(false); return }
     if (!alreadyVoted) {
       setUnhelpfulCount(c => c + 1)
       localStorage.setItem(`downvoted_${review.id}`, '1')
