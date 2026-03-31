@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { upvoteReview } from '@/actions/votes'
+import { upvoteReview, downvoteReview } from '@/actions/votes'
 import { generateVoterKey } from '@/lib/utils'
 import TagBadge from '@/components/TagBadge'
 import StarDisplay from '@/components/StarDisplay'
@@ -28,13 +28,15 @@ interface Props {
 }
 
 export default function ReviewCard({ review, classId, highlighted = false, professorName }: Props) {
-  const [count, setCount] = useState(review.helpful_count)
+  const [helpfulCount, setHelpfulCount] = useState(review.helpful_count)
+  const [unhelpfulCount, setUnhelpfulCount] = useState(review.unhelpful_count)
   const [voted, setVoted] = useState(false)
+  const [downvoted, setDownvoted] = useState(false)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const votedKey = `voted_${review.id}`
-    if (localStorage.getItem(votedKey)) setVoted(true)
+    if (localStorage.getItem(`voted_${review.id}`)) setVoted(true)
+    if (localStorage.getItem(`downvoted_${review.id}`)) setDownvoted(true)
   }, [review.id])
 
   async function handleUpvote() {
@@ -43,11 +45,26 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
     const voterKey = getOrCreateVoterKey()
     const { alreadyVoted } = await upvoteReview(review.id, voterKey, classId)
     if (!alreadyVoted) {
-      setCount(c => c + 1)
+      setHelpfulCount(c => c + 1)
       localStorage.setItem(`voted_${review.id}`, '1')
       setVoted(true)
     } else {
       setVoted(true)
+    }
+    setLoading(false)
+  }
+
+  async function handleDownvote() {
+    if (downvoted || loading) return
+    setLoading(true)
+    const voterKey = getOrCreateVoterKey()
+    const { alreadyVoted } = await downvoteReview(review.id, voterKey, classId)
+    if (!alreadyVoted) {
+      setUnhelpfulCount(c => c + 1)
+      localStorage.setItem(`downvoted_${review.id}`, '1')
+      setDownvoted(true)
+    } else {
+      setDownvoted(true)
     }
     setLoading(false)
   }
@@ -78,7 +95,7 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
         {review.tags.map(tag => <TagBadge key={tag} tag={tag} />)}
       </div>
 
-      <div>
+      <div className="flex gap-2">
         <button
           onClick={handleUpvote}
           disabled={voted || loading}
@@ -88,7 +105,18 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
               : 'bg-cream border-cream-border text-gray-500 hover:border-primary hover:text-primary'
           }`}
         >
-          👍 Helpful ({count})
+          👍 Helpful ({helpfulCount})
+        </button>
+        <button
+          onClick={handleDownvote}
+          disabled={downvoted || loading}
+          className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+            downvoted
+              ? 'bg-red-50 border-red-400 text-red-500 font-semibold'
+              : 'bg-cream border-cream-border text-gray-500 hover:border-red-300 hover:text-red-400'
+          }`}
+        >
+          👎 Not Helpful ({unhelpfulCount})
         </button>
       </div>
     </div>
