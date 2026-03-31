@@ -32,7 +32,8 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
   const [unhelpfulCount, setUnhelpfulCount] = useState(review.unhelpful_count)
   const [voted, setVoted] = useState(false)
   const [downvoted, setDownvoted] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [upvoteLoading, setUpvoteLoading] = useState(false)
+  const [downvoteLoading, setDownvoteLoading] = useState(false)
 
   useEffect(() => {
     if (localStorage.getItem(`voted_${review.id}`)) setVoted(true)
@@ -40,8 +41,8 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
   }, [review.id])
 
   async function handleUpvote() {
-    if (voted || loading) return
-    setLoading(true)
+    if (voted || upvoteLoading) return
+    setUpvoteLoading(true)
     const voterKey = getOrCreateVoterKey()
     const { alreadyVoted } = await upvoteReview(review.id, voterKey, classId)
     if (!alreadyVoted) {
@@ -51,12 +52,12 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
     } else {
       setVoted(true)
     }
-    setLoading(false)
+    setUpvoteLoading(false)
   }
 
   async function handleDownvote() {
-    if (downvoted || loading) return
-    setLoading(true)
+    if (downvoted || downvoteLoading) return
+    setDownvoteLoading(true)
     const voterKey = getOrCreateVoterKey()
     const { alreadyVoted } = await downvoteReview(review.id, voterKey, classId)
     if (!alreadyVoted) {
@@ -66,7 +67,7 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
     } else {
       setDownvoted(true)
     }
-    setLoading(false)
+    setDownvoteLoading(false)
   }
 
   return (
@@ -98,7 +99,7 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
       <div className="flex gap-2">
         <button
           onClick={handleUpvote}
-          disabled={voted || loading}
+          disabled={voted || upvoteLoading}
           className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
             voted
               ? 'bg-cream-hover border-primary text-primary font-semibold'
@@ -109,7 +110,7 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
         </button>
         <button
           onClick={handleDownvote}
-          disabled={downvoted || loading}
+          disabled={downvoted || downvoteLoading}
           className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
             downvoted
               ? 'bg-red-50 border-red-400 text-red-500 font-semibold'
