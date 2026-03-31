@@ -30,7 +30,7 @@ function categoryColor(category: string | null, sortedCategories: string[]): str
 }
 
 function ClassPopup({ cls, onClose, colorClass }: { cls: Class; onClose: () => void; colorClass: string }) {
-  const prof = (cls as unknown as { professor?: { name: string } }).professor
+  const prof = cls.professor
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/30" />
