@@ -11,7 +11,8 @@ try {
     const eqIdx = trimmed.indexOf('=')
     if (eqIdx < 0) continue
     const key = trimmed.slice(0, eqIdx).trim()
-    const value = trimmed.slice(eqIdx + 1).trim()
+    const rawValue = trimmed.slice(eqIdx + 1).trim()
+    const value = rawValue.replace(/^['"]|['"]$/g, '')
     if (!process.env[key]) process.env[key] = value
   }
 } catch {
@@ -34,6 +35,8 @@ interface ClassEntry {
   semester: string           // e.g. 'Fall 2026'
 }
 
+// WARNING: Re-running this script with the same data will create duplicate class rows.
+// The classes table has no unique constraint on (title, semester). Run only once per dataset.
 const CLASSES: ClassEntry[] = [
   // Example (remove when filling in real data):
   // {
@@ -49,22 +52,25 @@ const CLASSES: ClassEntry[] = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function getOrCreateProfessor(name: string): Promise<string> {
-  const { data: existing } = await supabase
+  const { data: existing, error: selectError } = await supabase
     .from('professors')
     .select('id')
     .ilike('name', name)
     .limit(1)
     .single()
 
+  if (selectError && selectError.code !== 'PGRST116') {
+    throw new Error(`Failed to look up professor "${name}": ${selectError.message}`)
+  }
   if (existing) return existing.id
 
-  const { data: created, error } = await supabase
+  const { data: created, error: insertError } = await supabase
     .from('professors')
     .insert({ name })
     .select('id')
     .single()
 
-  if (error || !created) throw new Error(`Failed to create professor "${name}": ${error?.message}`)
+  if (insertError || !created) throw new Error(`Failed to create professor "${name}": ${insertError?.message}`)
   console.log(`  Created professor: ${name}`)
   return created.id
 }
