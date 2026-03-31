@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { upvoteReview } from '@/actions/votes'
+import { upvoteReview, downvoteReview } from '@/actions/votes'
 import { generateVoterKey } from '@/lib/utils'
 import TagBadge from '@/components/TagBadge'
 import StarDisplay from '@/components/StarDisplay'
@@ -28,28 +28,48 @@ interface Props {
 }
 
 export default function ReviewCard({ review, classId, highlighted = false, professorName }: Props) {
-  const [count, setCount] = useState(review.helpful_count)
+  const [helpfulCount, setHelpfulCount] = useState(review.helpful_count)
+  const [unhelpfulCount, setUnhelpfulCount] = useState(review.unhelpful_count)
   const [voted, setVoted] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [downvoted, setDownvoted] = useState(false)
+  const [upvoteLoading, setUpvoteLoading] = useState(false)
+  const [downvoteLoading, setDownvoteLoading] = useState(false)
 
   useEffect(() => {
-    const votedKey = `voted_${review.id}`
-    if (localStorage.getItem(votedKey)) setVoted(true)
+    if (localStorage.getItem(`voted_${review.id}`)) setVoted(true)
+    if (localStorage.getItem(`downvoted_${review.id}`)) setDownvoted(true)
   }, [review.id])
 
   async function handleUpvote() {
-    if (voted || loading) return
-    setLoading(true)
+    if (voted || upvoteLoading) return
+    setUpvoteLoading(true)
     const voterKey = getOrCreateVoterKey()
-    const { alreadyVoted } = await upvoteReview(review.id, voterKey, classId)
+    const { error, alreadyVoted } = await upvoteReview(review.id, voterKey, classId)
+    if (error) { console.error('upvote failed:', error); setUpvoteLoading(false); return }
     if (!alreadyVoted) {
-      setCount(c => c + 1)
+      setHelpfulCount(c => c + 1)
       localStorage.setItem(`voted_${review.id}`, '1')
       setVoted(true)
     } else {
       setVoted(true)
     }
-    setLoading(false)
+    setUpvoteLoading(false)
+  }
+
+  async function handleDownvote() {
+    if (downvoted || downvoteLoading) return
+    setDownvoteLoading(true)
+    const voterKey = getOrCreateVoterKey()
+    const { error, alreadyVoted } = await downvoteReview(review.id, voterKey, classId)
+    if (error) { console.error('downvote failed:', error); setDownvoteLoading(false); return }
+    if (!alreadyVoted) {
+      setUnhelpfulCount(c => c + 1)
+      localStorage.setItem(`downvoted_${review.id}`, '1')
+      setDownvoted(true)
+    } else {
+      setDownvoted(true)
+    }
+    setDownvoteLoading(false)
   }
 
   return (
@@ -78,17 +98,28 @@ export default function ReviewCard({ review, classId, highlighted = false, profe
         {review.tags.map(tag => <TagBadge key={tag} tag={tag} />)}
       </div>
 
-      <div>
+      <div className="flex gap-2">
         <button
           onClick={handleUpvote}
-          disabled={voted || loading}
+          disabled={voted || upvoteLoading}
           className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
             voted
               ? 'bg-cream-hover border-primary text-primary font-semibold'
               : 'bg-cream border-cream-border text-gray-500 hover:border-primary hover:text-primary'
           }`}
         >
-          👍 Helpful ({count})
+          👍 Helpful ({helpfulCount})
+        </button>
+        <button
+          onClick={handleDownvote}
+          disabled={downvoted || downvoteLoading}
+          className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+            downvoted
+              ? 'bg-red-50 border-red-400 text-red-500 font-semibold'
+              : 'bg-cream border-cream-border text-gray-500 hover:border-red-300 hover:text-red-400'
+          }`}
+        >
+          👎 Not Helpful ({unhelpfulCount})
         </button>
       </div>
     </div>

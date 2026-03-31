@@ -27,10 +27,18 @@ export interface Review {
   tags: string[]
   semester: string
   helpful_count: number
+  unhelpful_count: number
   created_at: string
 }
 
 export interface ReviewVote {
+  id: string
+  review_id: string
+  voter_key: string
+  created_at: string
+}
+
+export interface ReviewDownvote {
   id: string
   review_id: string
   voter_key: string

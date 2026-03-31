@@ -97,14 +97,8 @@ export default async function ClassesPage({ searchParams }: PageProps) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4">
         <h1 className="text-lg font-bold text-gray-900">All Classes</h1>
-        <Link
-          href="/classes/add"
-          className="text-sm bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
-        >
-          + Add Class
-        </Link>
       </div>
 
       <ClassSearchInput
@@ -135,8 +129,7 @@ export default async function ClassesPage({ searchParams }: PageProps) {
 
       {groups.length === 0 ? (
         <div className="text-center py-16 text-gray-400 text-sm">
-          No classes found.{' '}
-          <Link href="/classes/add" className="text-primary font-semibold">Add one?</Link>
+          No classes found.
         </div>
       ) : (
         <div className="flex flex-col gap-2">

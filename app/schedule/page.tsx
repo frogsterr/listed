@@ -18,6 +18,9 @@ export default async function SchedulePage({ searchParams }: PageProps) {
     .eq('semester', semester)
     .not('start_time', 'is', null)
 
+  const allClasses = classes ?? []
+  const categories = [...new Set(allClasses.map(c => c.category).filter(Boolean))] as string[]
+
   return (
     <div className="w-full px-4 py-6">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
@@ -40,10 +43,10 @@ export default async function SchedulePage({ searchParams }: PageProps) {
       </div>
 
       <div className="bg-white border border-cream-border rounded-xl overflow-hidden">
-        <ScheduleCalendar classes={classes ?? []} />
+        <ScheduleCalendar classes={allClasses} categories={categories} />
       </div>
 
-      {(!classes || classes.length === 0) && (
+      {allClasses.length === 0 && (
         <div className="text-center py-8 text-gray-400 text-sm">
           No classes with scheduled times for {semester}.
         </div>
