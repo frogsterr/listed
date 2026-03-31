@@ -30,3 +30,29 @@ export async function upvoteReview(
 
   return { error: null, alreadyVoted }
 }
+
+export async function downvoteReview(
+  reviewId: string,
+  voterKey: string,
+  classId: string
+): Promise<{ error: string | null; alreadyVoted?: boolean }> {
+  if (!isValidVoterKey(voterKey)) return { error: 'invalid voter key' }
+
+  const supabase = await createClient()
+
+  const { data, error } = await supabase.rpc('increment_unhelpful_count', {
+    review_id: reviewId,
+    voter_key: voterKey,
+  })
+
+  if (error) return { error: error.message }
+
+  const result = data as { already_voted: boolean } | null
+  const alreadyVoted = result?.already_voted ?? false
+
+  if (!alreadyVoted) {
+    revalidatePath(`/classes/${classId}`)
+  }
+
+  return { error: null, alreadyVoted }
+}
