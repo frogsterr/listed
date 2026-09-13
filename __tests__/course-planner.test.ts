@@ -49,3 +49,19 @@ describe('course selection', () => {
     expect(filterPlannerClasses([...offerings].reverse(), { ...DEFAULT_FILTERS, sort: 'course' }).map(c => c.id)).toEqual(['new', 'other', 'unrated'])
   })
 })
+
+it('counts co-taught reviews once per instructor and supports secondary-instructor and cross-listed-code search', () => {
+  const primary = { id: 'p1', name: 'Professor One', created_at: '' }
+  const secondary = { id: 'p2', name: 'Professor Two', created_at: '' }
+  const coTaught = makeClass('team', {
+    course_codes: ['BIB 3000', 'JGW 3000'],
+    instructors: [{ professor: primary }, { professor: secondary }],
+  })
+  const other = makeClass('solo', { title: 'Other', professor_id: secondary.id, professor: secondary })
+  const rows = buildPlannerClasses([coTaught, other], [
+    { class_id: 'team', overall_rating: 3 }, { class_id: 'solo', overall_rating: 5 },
+  ])
+  expect(rows[0].professorRatings.map(r => r.stats)).toEqual([{ average: 3, count: 1 }, { average: 4, count: 2 }])
+  expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, query: 'Professor Two', category: 'JGW', minProfessorRating: 4 }).map(c => c.id)).toEqual(['team'])
+  expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, query: 'JGW 3000' }).map(c => c.id)).toEqual(['team'])
+})
