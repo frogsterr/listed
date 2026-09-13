@@ -77,6 +77,7 @@ export default async function ClassesPage({ searchParams }: PageProps) {
       })
     }
     const group = groupMap.get(cls.title)!
+    if (group.semester !== cls.semester) group.semester = 'Multiple semesters'
     group.sections.push({
       id: cls.id,
       professor_name: profName,

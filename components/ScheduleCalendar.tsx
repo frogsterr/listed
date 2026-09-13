@@ -98,9 +98,10 @@ interface Props {
   classes: Class[]
   categories: string[]
   initialDay?: string
+  showCategoryFilters?: boolean
 }
 
-export default function ScheduleCalendar({ classes, categories, initialDay }: Props) {
+export default function ScheduleCalendar({ classes, categories, initialDay, showCategoryFilters = true }: Props) {
   const sortedCategories = [...categories].sort()
   const [activeDay, setActiveDay] = useState<Day>(DAYS.includes(initialDay as Day) ? initialDay as Day : 'Mon')
   const [activeCategories, setActiveCategories] = useState<string[]>([])
@@ -145,7 +146,7 @@ export default function ScheduleCalendar({ classes, categories, initialDay }: Pr
         </div>
 
         {/* Category filter */}
-        {sortedCategories.length > 0 && (
+        {showCategoryFilters && sortedCategories.length > 0 && (
           <div className="flex gap-2 flex-wrap items-center">
             <button
               onClick={() => setActiveCategories([])}

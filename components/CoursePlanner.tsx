@@ -83,12 +83,12 @@ export default function CoursePlanner({ classes }: { classes: PlannerClass[] }) 
     </div>
     {!results.length ? <p className="rounded-xl border border-cream-border bg-white p-8 text-center text-sm text-gray-500">No offerings match these filters.</p> : view === 'calendar' ? <>
       {unscheduled > 0 && <p className="text-sm text-gray-500">{unscheduled} offering{unscheduled === 1 ? ' has' : 's have'} no complete meeting time; see the list for details.</p>}
-      <div className="rounded-xl border border-cream-border bg-white overflow-hidden"><ScheduleCalendar key={filters.day || 'any'} initialDay={filters.day || undefined} classes={results} categories={categories} /></div>
+      <div className="rounded-xl border border-cream-border bg-white overflow-hidden"><ScheduleCalendar showCategoryFilters={false} key={filters.day || 'any'} initialDay={filters.day || undefined} classes={results} categories={categories} /></div>
     </> : <div className="grid gap-3 md:grid-cols-2">
       {results.map(c => <article key={c.id} className="bg-white rounded-xl border border-cream-border p-4 flex flex-col gap-2">
         <div className="text-xs text-primary">{c.category ?? 'Uncategorized'} · {c.semester}</div>
         <Link href={`/classes/group/${encodeURIComponent(c.title)}`} className="font-semibold text-gray-900 hover:text-primary">{c.title}</Link>
-        <p className="text-xs text-gray-500">{c.course_codes?.join(' / ')}{c.credits != null ? ` · ${c.credits} credits` : ''}</p>
+        <p className="text-xs text-gray-500">{c.course_codes?.join(' / ')}{c.credits != null ? ` · ${c.credits} credit${c.credits === 1 ? '' : 's'}` : ''}</p>
         {c.professorRatings.length ? c.professorRatings.map(({ professor }) => <Link key={professor.id} className="text-sm text-primary" href={`/professors/${professor.id}`}>{professor.name}</Link>) : <p className="text-sm text-gray-500">Professor to be announced</p>}
         <p className="text-xs text-gray-500">{c.start_time && c.end_time && c.meeting_days?.length ? `${c.meeting_days.join('/')} · ${formatTime(c.start_time)}–${formatTime(c.end_time)}` : 'Meeting time to be announced'}</p>
         <Rating label="Course" stats={c.courseRating} />{c.professorRatings.map(({ professor, stats }) => <Rating key={professor.id} label={professor.name} stats={stats} />)}
