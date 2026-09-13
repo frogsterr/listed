@@ -16,10 +16,12 @@ export default async function ProfessorDetailPage({ params }: { params: Promise<
 
   if (!professor) notFound()
 
+  const { data: assignments, error: assignmentError } = await supabase.from('class_professors').select('class_id').eq('professor_id', id)
+  if (assignmentError) throw new Error('Unable to load teaching assignments')
   const { data: classes } = await supabase
     .from('classes')
-    .select('*, professor:professors(id, name, created_at)')
-    .eq('professor_id', id)
+    .select('*, professor:professors!classes_professor_id_fkey(id, name, created_at)')
+    .or(`professor_id.eq.${professor.id}${assignments?.length ? `,id.in.(${assignments.map(a => a.class_id).join(',')})` : ''}`)
 
   const { data: reviews } = await supabase
     .from('reviews')

@@ -9,6 +9,11 @@ export interface Class {
   title: string
   category: string | null
   professor_id: string | null
+  requirements?: string[]
+  course_codes?: string[]
+  credits?: number | null
+  catalog_instructors?: string[]
+  instructors?: { professor: Professor | null }[]
   meeting_days: string[]
   start_time: string | null  // e.g. "10:00"
   end_time: string | null    // e.g. "11:30"
@@ -27,10 +32,18 @@ export interface Review {
   tags: string[]
   semester: string
   helpful_count: number
+  unhelpful_count: number
   created_at: string
 }
 
 export interface ReviewVote {
+  id: string
+  review_id: string
+  voter_key: string
+  created_at: string
+}
+
+export interface ReviewDownvote {
   id: string
   review_id: string
   voter_key: string

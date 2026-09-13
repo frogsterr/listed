@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { CURRENT_SEMESTER, SEMESTERS } from '@/lib/constants'
-import ScheduleCalendar from '@/components/ScheduleCalendar'
+import CoursePlanner from '@/components/CoursePlanner'
+import { buildPlannerClasses } from '@/lib/course-planner'
 import Link from 'next/link'
 
 interface PageProps {
@@ -12,16 +13,19 @@ export default async function SchedulePage({ searchParams }: PageProps) {
   const semester = semesterParam ?? CURRENT_SEMESTER
   const supabase = await createClient()
 
-  const { data: classes } = await supabase
-    .from('classes')
-    .select('*, professor:professors(id, name, created_at)')
-    .eq('semester', semester)
-    .not('start_time', 'is', null)
+  const [classes, reviews] = await Promise.all([
+    supabase.from('classes').select('*, professor:professors!classes_professor_id_fkey(id, name, created_at), instructors:class_professors(professor:professors(*))'),
+    supabase.from('reviews').select('class_id, overall_rating'),
+  ])
+  if (classes.error || reviews.error) {
+    return <p role="alert" className="p-6">Unable to load course offerings. Please try again.</p>
+  }
+  const allClasses = buildPlannerClasses(classes.data ?? [], reviews.data ?? []).filter(c => c.semester === semester)
 
   return (
-    <div className="w-full px-4 py-6">
+    <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-        <h1 className="text-lg font-bold text-gray-900">Weekly Schedule</h1>
+        <h1 className="text-lg font-bold text-gray-900">Choose Your Classes</h1>
         <div className="flex gap-2 flex-wrap">
           {SEMESTERS.map(s => (
             <Link
@@ -39,13 +43,9 @@ export default async function SchedulePage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <div className="bg-white border border-cream-border rounded-xl overflow-hidden">
-        <ScheduleCalendar classes={classes ?? []} />
-      </div>
-
-      {(!classes || classes.length === 0) && (
-        <div className="text-center py-8 text-gray-400 text-sm">
-          No classes with scheduled times for {semester}.
+      {allClasses.length ? <CoursePlanner key={semester} classes={allClasses} /> : (
+        <div className="text-center py-8 text-gray-500 text-sm">
+          No course offerings have been added for {semester} yet.
         </div>
       )}
     </div>

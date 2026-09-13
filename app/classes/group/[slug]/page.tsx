@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { classProfessors } from '@/lib/class-professors'
 import { formatTime } from '@/lib/utils'
 import RatingSummary from '@/components/RatingSummary'
 import ReviewCard from '@/components/ReviewCard'
@@ -15,7 +16,7 @@ export default async function GroupClassPage({ params }: { params: Promise<{ slu
 
   const { data: sections } = await supabase
     .from('classes')
-    .select('*, professor:professors(id, name, created_at)')
+    .select('*, professor:professors!classes_professor_id_fkey(id, name, created_at), instructors:class_professors(professor:professors(*))')
     .eq('title', title)
     .order('start_time', { ascending: true })
 
@@ -34,7 +35,7 @@ export default async function GroupClassPage({ params }: { params: Promise<{ slu
   const classIdToProfessor: Record<string, string> = {}
   for (const s of sections) {
     const prof = s.professor as { id: string; name: string } | null
-    classIdToProfessor[s.id] = prof?.name ?? 'Unknown'
+    classIdToProfessor[s.id] = s.catalog_instructors?.length ? s.catalog_instructors.join(' / ') : prof?.name ?? 'Unknown'
   }
 
   const avgOverall = allReviews.length
@@ -49,11 +50,11 @@ export default async function GroupClassPage({ params }: { params: Promise<{ slu
     : null
 
   const category = sections[0]?.category
-  const semester = sections[0]?.semester
+  const semester = [...new Set(sections.map(s => s.semester))].join(' / ')
 
   const ctaSections = sections.map(s => ({
     id: s.id,
-    professorName: (s.professor as { name: string } | null)?.name ?? 'Unknown',
+    professorName: `${classProfessors(s).map(p => p.name).join(' / ') || 'Unknown'} · ${s.semester}${s.course_codes?.length ? ` · ${s.course_codes.join(' / ')}` : ''}`,
   }))
 
   return (
@@ -80,23 +81,17 @@ export default async function GroupClassPage({ params }: { params: Promise<{ slu
             </h2>
             <div className="flex flex-col gap-4">
               {sections.map(s => {
-                const prof = s.professor as { id: string; name: string } | null
+                const professors = classProfessors(s)
                 const sectionReviews = allReviews.filter(r => r.class_id === s.id)
                 const sectionAvg = sectionReviews.length
                   ? sectionReviews.reduce((sum, r) => sum + r.overall_rating, 0) / sectionReviews.length
                   : null
                 return (
                   <div key={s.id} className="flex flex-col gap-0.5">
-                    {prof ? (
-                      <Link
-                        href={`/professors/${prof.id}`}
-                        className="text-sm font-semibold text-primary hover:underline"
-                      >
-                        {prof.name}
-                      </Link>
-                    ) : (
-                      <span className="text-sm font-semibold text-gray-700">Unknown</span>
-                    )}
+                    <div className="text-xs text-gray-500">{s.semester}{s.course_codes?.length ? ` · ${s.course_codes.join(' / ')}` : ''}</div>
+                    {professors.length ? professors.map(prof => (
+                      <Link key={prof.id} href={`/professors/${prof.id}`} className="text-sm font-semibold text-primary hover:underline">{prof.name}</Link>
+                    )) : <span className="text-sm font-semibold text-gray-700">Unknown</span>}
                     {s.meeting_days?.length > 0 && s.start_time && (
                       <div className="text-xs text-gray-400">
                         {s.meeting_days.join('/')} · {formatTime(s.start_time)}–{formatTime(s.end_time ?? '')}

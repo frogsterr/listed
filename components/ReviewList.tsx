@@ -10,7 +10,7 @@ interface Props {
   classIdToProfessor?: Record<string, string>
 }
 
-export default function ReviewList({ reviews, classId, classIdToProfessor }: Props) {
+export default function ReviewList({ reviews, classIdToProfessor }: Props) {
   const [sort, setSort] = useState<'recent' | 'helpful'>('recent')
 
   const sorted = [...reviews].sort((a, b) => {
@@ -38,7 +38,7 @@ export default function ReviewList({ reviews, classId, classIdToProfessor }: Pro
           <ReviewCard
             key={r.id}
             review={r}
-            classId={classId}
+            classId={r.class_id}
             professorName={classIdToProfessor?.[r.class_id]}
           />
         ))}

@@ -1,26 +1,25 @@
 import { createClient } from '@/lib/supabase/server'
 import ProfessorCard from '@/components/ProfessorCard'
-import type { ProfessorWithStats } from '@/lib/types'
+import { classProfessors } from '@/lib/class-professors'
+import type { Class, ProfessorWithStats } from '@/lib/types'
 
 export default async function TopProfessorsSection() {
   const supabase = await createClient()
 
   const { data: reviews } = await supabase
     .from('reviews')
-    .select('overall_rating, class:classes(professor_id, professor:professors(*))')
+    .select('overall_rating, class:classes(professor_id, professor:professors!classes_professor_id_fkey(*), instructors:class_professors(professor:professors(*)))')
 
   if (!reviews || reviews.length === 0) return null
 
   const map = new Map<string, { sum: number; count: number; prof: unknown }>()
   for (const r of reviews) {
-    const cls = (r as unknown as { class: { professor_id: string; professor: unknown } | null }).class
-    if (!cls?.professor_id) continue
-    const existing = map.get(cls.professor_id)
-    map.set(cls.professor_id, {
-      sum: (existing?.sum ?? 0) + r.overall_rating,
-      count: (existing?.count ?? 0) + 1,
-      prof: cls.professor ?? existing?.prof,
-    })
+    const cls = r.class as unknown as Class | null
+    if (!cls) continue
+    for (const prof of classProfessors(cls)) {
+      const existing = map.get(prof.id)
+      map.set(prof.id, { sum: (existing?.sum ?? 0) + r.overall_rating, count: (existing?.count ?? 0) + 1, prof })
+    }
   }
 
   const ranked: ProfessorWithStats[] = [...map.entries()]

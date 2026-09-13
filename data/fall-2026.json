@@ -1,0 +1,599 @@
+[
+  {
+    "title": "Introduction to Biblical Literature: Pentateuch",
+    "semester": "Fall 2026",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 1210"
+    ],
+    "professors": [
+      "Ronald Androphy"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "13:05",
+    "end_time": "14:20",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Character of God in the Bible",
+    "semester": "Fall 2026",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 3224",
+      "JGW 3224",
+      "JTH 3224"
+    ],
+    "professors": [
+      "Amy Kalmanofsky"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "LC Fellows Seminar: Many Lenses on Moses",
+    "semester": "Fall 2026",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 3503"
+    ],
+    "professors": [
+      "Stephen Garfinkel"
+    ],
+    "meeting_days": [
+      "Tue"
+    ],
+    "start_time": "14:45",
+    "end_time": "17:25",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Rashbam and Biblical Narrative",
+    "semester": "Fall 2026",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 3570"
+    ],
+    "professors": [
+      "Robert Harris"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "13:05",
+    "end_time": "14:20",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (BIB)",
+    "semester": "Fall 2026",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Foundations of Jewish Ethics",
+    "semester": "Fall 2026",
+    "category": "Jewish Ethics",
+    "course_codes": [
+      "ETH 3318",
+      "JTH 3318"
+    ],
+    "professors": [
+      "Shira Billet"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "14:45",
+    "end_time": "16:00",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (ETH)",
+    "semester": "Fall 2026",
+    "category": "Jewish Ethics",
+    "course_codes": [
+      "ETH 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Hebrew Alef 1",
+    "semester": "Fall 2026",
+    "category": "Hebrew",
+    "course_codes": [
+      "HEB 1001"
+    ],
+    "professors": [
+      "Nina Brennan Nesher"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu"
+    ],
+    "start_time": "10:10",
+    "end_time": "11:25",
+    "credits": 6.0,
+    "requirements": []
+  },
+  {
+    "title": "Hebrew Alef 2",
+    "semester": "Fall 2026",
+    "category": "Hebrew",
+    "course_codes": [
+      "HEB 1101"
+    ],
+    "professors": [
+      "Rebeca Rydel"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu"
+    ],
+    "start_time": "10:10",
+    "end_time": "11:25",
+    "credits": 6.0,
+    "requirements": []
+  },
+  {
+    "title": "Hebrew Alef 3",
+    "semester": "Fall 2026",
+    "category": "Hebrew",
+    "course_codes": [
+      "HEB 2103 1"
+    ],
+    "professors": [
+      "Sarah Hochfeld"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu"
+    ],
+    "start_time": "10:10",
+    "end_time": "11:25",
+    "credits": 6.0,
+    "requirements": []
+  },
+  {
+    "title": "Hebrew Alef 3",
+    "semester": "Fall 2026",
+    "category": "Hebrew",
+    "course_codes": [
+      "HEB 2103 2"
+    ],
+    "professors": [
+      "Adam Eliyaho Cohen"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu"
+    ],
+    "start_time": "08:40",
+    "end_time": "09:55",
+    "credits": 6.0,
+    "requirements": []
+  },
+  {
+    "title": "Hebrew Bet 1",
+    "semester": "Fall 2026",
+    "category": "Hebrew",
+    "course_codes": [
+      "HEB 2201"
+    ],
+    "professors": [
+      "Ilona Ben-Moshe"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "08:40",
+    "end_time": "09:55",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Medieval Jewish History",
+    "semester": "Fall 2026",
+    "category": "Jewish History",
+    "course_codes": [
+      "HIS 1011",
+      "MED 1011"
+    ],
+    "professors": [
+      "Benjamin R. Gampel"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "14:45",
+    "end_time": "16:00",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Food, Piety, and Politics",
+    "semester": "Fall 2026",
+    "category": "Jewish History",
+    "course_codes": [
+      "HIS 3061",
+      "JGW 3061"
+    ],
+    "professors": [
+      "Stefanie Siegmund"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Jewish Ceremonial Art in Context",
+    "semester": "Fall 2026",
+    "category": "Jewish History",
+    "course_codes": [
+      "HIS 3405"
+    ],
+    "professors": [
+      "Rebecca Perten"
+    ],
+    "meeting_days": [
+      "Thu"
+    ],
+    "start_time": "10:10",
+    "end_time": "12:55",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (HIS)",
+    "semester": "Fall 2026",
+    "category": "Jewish History",
+    "course_codes": [
+      "HIS 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (IDS)",
+    "semester": "Fall 2026",
+    "category": "Interdisciplinary Studies",
+    "course_codes": [
+      "IDS 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Conservative Judaism",
+    "semester": "Fall 2026",
+    "category": "Jewish Thought",
+    "course_codes": [
+      "JTH 3313"
+    ],
+    "professors": [
+      "Arnold M Eisen"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (JTH)",
+    "semester": "Fall 2026",
+    "category": "Jewish Thought",
+    "course_codes": [
+      "JTH 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "List 101",
+    "semester": "Fall 2026",
+    "category": "List College",
+    "course_codes": [
+      "LIS 101"
+    ],
+    "professors": [
+      "Orlea Marlin",
+      "Rachel Malaga"
+    ],
+    "meeting_days": [
+      "Tue"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 1.0,
+    "requirements": []
+  },
+  {
+    "title": "Introduction to Israeli Literature",
+    "semester": "Fall 2026",
+    "category": "Jewish Literature",
+    "course_codes": [
+      "LIT 1032"
+    ],
+    "professors": [
+      "Beverly J. Bailis"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (LIT)",
+    "semester": "Fall 2026",
+    "category": "Jewish Literature",
+    "course_codes": [
+      "LIT 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (LTG)",
+    "semester": "Fall 2026",
+    "category": "Liturgy",
+    "course_codes": [
+      "LTG 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (MDS)",
+    "semester": "Fall 2026",
+    "category": "Midrash",
+    "course_codes": [
+      "MDS 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (MED)",
+    "semester": "Fall 2026",
+    "category": "Medieval Jewish Studies",
+    "course_codes": [
+      "MED 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (MID)",
+    "semester": "Fall 2026",
+    "category": "Midrash",
+    "course_codes": [
+      "MID 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Jewish Ceremonial Art",
+    "semester": "Fall 2026",
+    "category": "Modern Jewish Studies",
+    "course_codes": [
+      "MJS 3405"
+    ],
+    "professors": [
+      "Rebecca Perten"
+    ],
+    "meeting_days": [
+      "Thu"
+    ],
+    "start_time": "10:10",
+    "end_time": "12:55",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (MJS)",
+    "semester": "Fall 2026",
+    "category": "Modern Jewish Studies",
+    "course_codes": [
+      "MJS 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Introduction to Talmud I",
+    "semester": "Fall 2026",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 1021"
+    ],
+    "professors": [
+      "Ronald Androphy"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "14:45",
+    "end_time": "16:00",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Intermediate Talmud: Minhag in Rabbinic Literature",
+    "semester": "Fall 2026",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 3213"
+    ],
+    "professors": [
+      "Richard Kalmin"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "13:05",
+    "end_time": "14:20",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Advanced Talmud: How do we Pray when Prayer Isn't Enough?",
+    "semester": "Fall 2026",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 3623"
+    ],
+    "professors": [
+      "Marcus Schwartz"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "14:45",
+    "end_time": "16:00",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (RLC)",
+    "semester": "Fall 2026",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Foundations of the Jewish Canon I",
+    "semester": "Fall 2026",
+    "category": "Seminar",
+    "course_codes": [
+      "SEM 1011 1"
+    ],
+    "professors": [
+      "Gordon Tucker"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 3.0,
+    "requirements": []
+  },
+  {
+    "title": "Foundations of the Jewish Canon I",
+    "semester": "Fall 2026",
+    "category": "Seminar",
+    "course_codes": [
+      "SEM 1011 2"
+    ],
+    "professors": [
+      "Yael Landman"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 3.0,
+    "requirements": []
+  }
+]

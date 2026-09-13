@@ -14,7 +14,7 @@ export default async function ClassDetailPage({ params }: { params: Promise<{ id
 
   const { data: cls } = await supabase
     .from('classes')
-    .select('*, professor:professors(id, name, created_at)')
+    .select('*, professor:professors!classes_professor_id_fkey(id, name, created_at)')
     .eq('id', id)
     .single()
 

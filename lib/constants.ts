@@ -1,4 +1,4 @@
-export const CURRENT_SEMESTER = 'Spring 2026'
+export const CURRENT_SEMESTER = 'Fall 2026'
 
 export const SEMESTERS = [
   'Spring 2026',
@@ -47,5 +47,5 @@ export const TAGS = [
   },
 ]
 
-export const DAYS = ['Mon', 'Tue', 'Wed', 'Thu'] as const
+export const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as const
 export type Day = typeof DAYS[number]
