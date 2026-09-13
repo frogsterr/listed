@@ -1,54 +1,41 @@
-# Resume LISTED work — September 13, 2026
+# LISTED — production status, September 13, 2026
 
-User paused to close the laptop. Repository: `/Users/benshv/listed`, branch `fix/admin-only-catalog`.
+## Completed and deployed
 
-## User scope and decisions
+Repository: `/Users/benshv/listed`. Production branch: `master`.
+PR #3: https://github.com/frogsterr/listed/pull/3 — merged at `be2c9982a40b71c0b1ffe0d9f8e3c0ac899ebbba`.
+Vercel production deployment `Eg73kxApJY8LhsuMAdjGdNuZvJqL` reported success. Public site: https://julpa.org; planner: https://julpa.org/schedule.
 
-- Remove the reported troll course and its review.
-- Make course/professor additions admin-only.
-- Import Fall 2026 courses from `/Users/benshv/Downloads/Fall 2026 JTS Courses.rtf`.
-- Improve class selection via ratings, requirements, meeting times, and a calendar.
-- Sole administrator email: `benjiblackk@yahoo.com`.
+- Removed the reported troll course `de21c401-b504-4484-92bd-b2ca739d233c`, including its dependent review/votes. Verified production returns 404. Backup is in ignored `.backups/reported-course-1789314588887.json`. No unrelated courses or professor records were deleted.
+- User applied `supabase/upgrade-production.sql`; schema was verified before import. The bundle is ALREADY APPLIED: do not rerun it or reapply migrations 004/006–009 separately.
+- Imported and verified 34 Fall 2026 offerings: 22 scheduled, 12 honors-thesis entries, representing 39 academic source listings and 21 instructors. Five non-course registration placeholders were excluded. Dry-run recheck: 0 inserts, 34 already present.
+- Added admin-only course/professor creation and moderation, using server-verified Supabase Auth and per-action checks. Database permissions also reject direct public catalog writes. Anonymous reviews and voting remain available; arbitrary public review edits and fabricated initial vote totals are blocked.
+- Configured `ADMIN_USER_ID` in Vercel for Production, Preview, and Development. The sole account is `benjiblackk@yahoo.com`, UUID `cf596806-fb57-4ee0-b988-61428c1fd3c4`.
+- Deployed the Fall-default course planner, list/calendar views, department and meeting-time filters, course/instructor rating thresholds, review counts, and deterministic sorting. Codes, sections, co-instructors, and historical reviews are preserved. Grouped pages label each offering's semester.
 
-## Completed LIVE
+## Verification completed
 
-- Removed exactly the reported Spring 2026 course, ID `de21c401-b504-4484-92bd-b2ca739d233c`, and its dependent review/votes. Verified absent. No professors or unrelated courses deleted.
-- Backup stored in ignored `.backups/reported-course-1789314588887.json`.
-- User successfully ran `supabase/upgrade-production.sql` in Supabase SQL Editor. API verification confirmed the added columns/tables. Do NOT rerun the bundle; it is intended for the original 001–003 schema and was applied already.
-- Imported and verified 34 Fall 2026 offerings (22 scheduled, 12 honors-thesis entries) from 39 academic source listings; five registration/program placeholders excluded. Preserved codes, credits, co-instructors and explicit sections. Requirements are empty because the source did not supply mappings.
-- Created Supabase Auth admin user `cf596806-fb57-4ee0-b988-61428c1fd3c4`. Generated password is saved privately in `.backups/admin-login.txt` (mode 600), NOT in Git/chat.
+- 45 tests pass, including PGlite PostgreSQL migration/permissions tests, server-action access control, import validation, co-instructor filtering, and overlapping calendar entries.
+- ESLint, TypeScript, and production build pass.
+- Browser-tested the local production build against real Supabase data: planner filters and calendar rendering, co-instructors, and separate Spring/Fall section labels.
+- Production HTTP checks: schedule/classes/professors/admin pages return 200; the co-instructor Rachel Malaga's page includes List 101; deleted course returns 404; unauthenticated add routes redirect to `/admin`; real authenticated admin requests reach the admin panel and both add forms.
+- Production public catalog insert tests with deliberately invalid/null required fields returned permission denied (42501), with no test records created.
+- The protected Vercel preview sign-in redirect stalled in browser automation, so hosted verification used the public production domain. Browser control subsequently became unreliable. No safety protections were disabled.
 
-## Completed locally, NOT deployed to production
+## Remaining data/configuration follow-ups
 
-- Built on existing unmerged PR #2 (`feature/site-improvements`, commit c0623b5). This working branch contains its history plus the new changes. Production/master was `db34767`.
-- Server-verified Supabase Auth admin login and per-action authorization. Public add buttons removed, forms protected, admin links retained. `ADMIN_USER_ID` fails closed when absent.
-- Database migrations deny public catalog writes and arbitrary review updates; anonymous reviews and vote RPCs continue working.
-- Schedule tab includes Fall 2026 default, list/calendar views, course/instructor ratings with counts, department, requirement, day/time filters, and deterministic sorting.
-- Historical course ratings match exact titles; instructor ratings follow person IDs. For co-taught offerings, instructor filters/sorts use highest-rated instructor; each person's ratings are shown.
-- Importer is dry-run by default, validates input, matches professor names ignoring periods, detects duplicates, verifies writes, and repairs teaching assignments on retry. Source decisions documented in `data/README.md`.
-- SQL cleanup inherited from PR #2 was narrowed to the single user-reported course; other originally listed deletes are not authorized and were not performed.
+- Obtain authoritative degree-requirement mappings. The provided RTF contains no such mappings, so `requirements` arrays remain empty and that filter honestly displays “Requirements not available yet.” Department labels are not claims of requirement fulfillment.
+- Confirm whether HIS 3405 and MJS 3405 should be combined: titles differ, but instructor/time/room match. They remain separate pending confirmation.
+- Rotate Supabase secret/service-role keys previously pasted into chat, and update Vercel plus `.env.local`. Rotation has NOT been performed. The existing Vercel service key was marked “Needs Attention” because it was stored as Config rather than Secret.
 
-## Configuration and secrets
+## Source and private files
 
-- `.env.local` exists (mode 600), ignored by Git. Contains project URL, public key, server secret, ADMIN_USER_ID. Never print or commit it.
-- Project ref: `ijnaxoimvkoghwntrich`; domains `julpa.org` and `listed-ashy.vercel.app`.
-- User pasted secret/service-role keys into chat. Advised rotating them after work and updating Vercel. Rotation is still outstanding.
-- Set Vercel `ADMIN_USER_ID=cf596806-fb57-4ee0-b988-61428c1fd3c4` before deploying. Existing `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` were already configured there; old service key showed “Needs Attention.” Do not expose server secrets via NEXT_PUBLIC variables. Remove obsolete NEXT_PUBLIC_ADMIN_PASSWORD if present.
+Official source supplied by user: `/Users/benshv/Downloads/Fall 2026 JTS Courses.rtf`.
+Normalized data and source decisions: `data/fall-2026.json`, `data/fall-2026-excluded.json`, and `data/README.md`.
+Project ref: `ijnaxoimvkoghwntrich`.
 
-## Validation and remaining work
+`.env.local` contains working configuration and secrets; ignored by Git, mode 600. Never print or commit it.
+Admin password is in `.backups/admin-login.txt`, also private/ignored. Do not paste it into chat or Git. Admin URL: https://julpa.org/admin.
+Import/deletion logs and backups are in `.backups/`. These operations do not need repeating.
 
-- 42 tests passed, including real PostgreSQL migration/permissions behavior in PGlite, admin-action access control, planner filtering, and import validation.
-- Lint passed. Production build passed before the last small co-instructor/calendar changes. TypeScript passed after those final changes.
-- Repeat tests/lint/build on resume; add targeted co-instructor and calendar-overlap coverage, then visually verify with real Fall data.
-- Confirm HIS 3405 and MJS 3405 cross-listing: different titles but same instructor/time/room, retained separately pending confirmation.
-- Obtain authoritative requirement mappings before populating them. Departments are not asserted to fulfill degree requirements.
-- Review deployment/PR strategy: existing PR #2 is still open; no existing PR or master was modified. This branch can supersede or extend it.
-- Deploy the app after Vercel environment setup, and verify admin login, unauthenticated action denial, course pages, professor pages, ratings/filtering, and schedule. IMPORTANT: production still runs old code with unguarded service-role server actions until deployment, even though direct public database writes are now blocked.
-- No production deployment was performed during this session.
-
-## Tools/access notes
-
-- GitHub CLI authenticated; repository clone/push supported.
-- Browser connector reported none. Native Chrome was available via cua.getApp('com.google.Chrome'), with Supabase/Vercel tabs already open. Supabase dashboard became blank on reload; user ran SQL manually instead. Do not interrupt their tabs needlessly.
-- Use cua_repl for all browser/computer interactions. Use Supabase JS/API with ignored local credentials for data operations.
-- Read `AGENTS.md`; this repo requires relevant local Next.js 16 docs before coding.
+The branch `fix/admin-only-catalog` is retained; it incorporated the older site-improvements PR #2 and fixed its missing authorization. Master contains the final implementation. Read `AGENTS.md` and relevant local Next.js 16 documentation before new code changes. See `supabase/README.md` for maintenance commands.
