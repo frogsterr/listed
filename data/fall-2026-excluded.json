@@ -1,0 +1,27 @@
+[
+  {
+    "course_code": "BAR LIST",
+    "title": "Barnard - Dual Degree Program",
+    "reason": "Program or registration placeholder; no scheduled academic course"
+  },
+  {
+    "course_code": "COL LIST",
+    "title": "COLUMBIA/LIST JOINT PROGRAM",
+    "reason": "Program or registration placeholder; no scheduled academic course"
+  },
+  {
+    "course_code": "LCP 0010",
+    "title": "LC FIRST SEMESTER PLACEHOLDER",
+    "reason": "Program or registration placeholder; no scheduled academic course"
+  },
+  {
+    "course_code": "REG ABRD",
+    "title": "LC STUDY ABROAD SEMESTER",
+    "reason": "Program or registration placeholder; no scheduled academic course"
+  },
+  {
+    "course_code": "REG ISRA",
+    "title": "SEMESTER IN ISRAEL-LIST COLLEGE ONL",
+    "reason": "Program or registration placeholder; no scheduled academic course"
+  }
+]

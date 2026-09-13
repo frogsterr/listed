@@ -15,7 +15,7 @@ export default async function GroupClassPage({ params }: { params: Promise<{ slu
 
   const { data: sections } = await supabase
     .from('classes')
-    .select('*, professor:professors(id, name, created_at)')
+    .select('*, professor:professors!classes_professor_id_fkey(id, name, created_at)')
     .eq('title', title)
     .order('start_time', { ascending: true })
 
@@ -34,7 +34,7 @@ export default async function GroupClassPage({ params }: { params: Promise<{ slu
   const classIdToProfessor: Record<string, string> = {}
   for (const s of sections) {
     const prof = s.professor as { id: string; name: string } | null
-    classIdToProfessor[s.id] = prof?.name ?? 'Unknown'
+    classIdToProfessor[s.id] = s.catalog_instructors?.length ? s.catalog_instructors.join(' / ') : prof?.name ?? 'Unknown'
   }
 
   const avgOverall = allReviews.length
@@ -53,7 +53,7 @@ export default async function GroupClassPage({ params }: { params: Promise<{ slu
 
   const ctaSections = sections.map(s => ({
     id: s.id,
-    professorName: (s.professor as { name: string } | null)?.name ?? 'Unknown',
+    professorName: s.catalog_instructors?.length ? s.catalog_instructors.join(' / ') : (s.professor as { name: string } | null)?.name ?? 'Unknown',
   }))
 
   return (

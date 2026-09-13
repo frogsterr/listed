@@ -1,26 +1,6 @@
--- Delete reviews belonging to bogus classes first (FK cascade would handle it, but explicit is safer)
-DELETE FROM reviews
-WHERE class_id IN (
-  SELECT id FROM classes
-  WHERE title IN (
-    'How to kidnap temani babies 101',
-    'Intro to Koyfer Avoda Zara'
-  )
-);
-
--- Delete the bogus classes
-DELETE FROM classes
-WHERE title IN (
-  'How to kidnap temani babies 101',
-  'Intro to Koyfer Avoda Zara'
-);
-
--- Delete the bogus professors
-DELETE FROM professors
-WHERE name IN (
-  'Reb Duvid Ben Reb Lipa Laizer Shlita',
-  'Usher Strell Ha Cohen'
-);
-
--- Fix the "Food class" category chip — null it out
-UPDATE classes SET category = NULL WHERE category = 'Food class';
+-- Scope cleanup to the course reported by the owner. Its reviews and votes
+-- are removed by the existing foreign-key cascades. Do not delete professors
+-- or unrelated courses based on names alone.
+DELETE FROM public.classes
+WHERE title = 'How to kidnap temani babies 101'
+  AND semester = 'Spring 2026';

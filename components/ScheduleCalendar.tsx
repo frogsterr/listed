@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { layoutDayClasses, timeToMinutes } from '@/lib/calendar'
 import { DAYS } from '@/lib/constants'
 import { formatTime } from '@/lib/utils'
+import { classProfessors } from '@/lib/class-professors'
 import type { Class } from '@/lib/types'
 import type { Day } from '@/lib/constants'
 
@@ -30,7 +32,8 @@ function categoryColor(category: string | null, sortedCategories: string[]): str
 }
 
 function ClassPopup({ cls, onClose, colorClass }: { cls: Class; onClose: () => void; colorClass: string }) {
-  const prof = cls.professor
+  const professors = classProfessors(cls)
+  const professorNames = professors.map(p => p.name).join(' / ')
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/30" />
@@ -53,10 +56,10 @@ function ClassPopup({ cls, onClose, colorClass }: { cls: Class; onClose: () => v
           <h2 className="text-base font-bold text-gray-900 mt-2 pr-6">{cls.title}</h2>
         </div>
         <div className="flex flex-col gap-2 text-sm text-gray-600 mb-6">
-          {prof?.name && (
+          {professorNames && (
             <div className="flex items-center gap-2">
               <span className="text-gray-300 text-base">👤</span>
-              <span>{prof.name}</span>
+              <span>{professorNames}</span>
             </div>
           )}
           {cls.meeting_days && cls.start_time && (
@@ -83,11 +86,6 @@ function ClassPopup({ cls, onClose, colorClass }: { cls: Class; onClose: () => v
   )
 }
 
-function timeToMinutes(time: string): number {
-  const [h, m] = time.split(':').map(Number)
-  return h * 60 + m
-}
-
 function minutesToTop(minutes: number): number {
   return ((minutes - HOUR_START * 60) / 60) * SLOT_HEIGHT
 }
@@ -96,47 +94,15 @@ function minutesToHeight(startMin: number, endMin: number): number {
   return ((endMin - startMin) / 60) * SLOT_HEIGHT
 }
 
-interface LayoutItem {
-  cls: Class
-  col: number
-  numCols: number
-}
-
-function layoutDayClasses(classes: Class[]): LayoutItem[] {
-  const valid = classes.filter(c => c.start_time && c.end_time)
-  const sorted = [...valid].sort((a, b) => timeToMinutes(a.start_time!) - timeToMinutes(b.start_time!))
-
-  const colEnds: number[] = []
-  const assigned = sorted.map(cls => {
-    const s = timeToMinutes(cls.start_time!)
-    const e = timeToMinutes(cls.end_time!)
-    let col = colEnds.findIndex(end => end <= s)
-    if (col === -1) { col = colEnds.length; colEnds.push(e) }
-    else colEnds[col] = e
-    return { cls, col, startMin: s, endMin: e }
-  })
-
-  return assigned.map(item => {
-    const numCols = assigned
-      .filter(other => other.startMin < item.endMin && other.endMin > item.startMin)
-      .reduce((max, other) => Math.max(max, other.col + 1), 1)
-    return { cls: item.cls, col: item.col, numCols }
-  })
-}
-
-function defaultDay(): Day {
-  const d = new Date().getDay() // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
-  return (d >= 1 && d <= 4) ? DAYS[d - 1] : DAYS[0]
-}
-
 interface Props {
   classes: Class[]
   categories: string[]
+  initialDay?: string
 }
 
-export default function ScheduleCalendar({ classes, categories }: Props) {
+export default function ScheduleCalendar({ classes, categories, initialDay }: Props) {
   const sortedCategories = [...categories].sort()
-  const [activeDay, setActiveDay] = useState<Day>(defaultDay())
+  const [activeDay, setActiveDay] = useState<Day>(DAYS.includes(initialDay as Day) ? initialDay as Day : 'Mon')
   const [activeCategories, setActiveCategories] = useState<string[]>([])
   const [selected, setSelected] = useState<Class | null>(null)
 
@@ -220,6 +186,7 @@ export default function ScheduleCalendar({ classes, categories }: Props) {
         )}
       </div>
 
+      {items.length === 0 && <p className="p-4 text-sm text-gray-500">No scheduled classes for {activeDay} with these filters.</p>}
       {/* Time grid */}
       <div className="flex">
         {/* Hour labels */}

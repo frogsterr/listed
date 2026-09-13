@@ -8,26 +8,23 @@ export default async function ProfessorsPage() {
   const { data: professors } = await supabase.from('professors').select('*').order('name')
   const { data: reviews } = await supabase
     .from('reviews')
-    .select('overall_rating, class:classes(professor_id)')
+    .select('overall_rating, class:classes(professor_id, instructors:class_professors(professor_id))')
 
   const statsMap = new Map<string, { sum: number; count: number }>()
   for (const r of reviews ?? []) {
-    const profId = (r.class as unknown as { professor_id: string | null })?.professor_id
-    if (!profId) continue
-    const existing = statsMap.get(profId) ?? { sum: 0, count: 0 }
-    statsMap.set(profId, { sum: existing.sum + r.overall_rating, count: existing.count + 1 })
+    const cls = r.class as unknown as { professor_id: string | null; instructors: { professor_id: string }[] } | null
+    const ids = new Set([...(cls?.professor_id ? [cls.professor_id] : []), ...(cls?.instructors ?? []).map(i => i.professor_id)])
+    for (const id of ids) {
+      const existing = statsMap.get(id) ?? { sum: 0, count: 0 }
+      statsMap.set(id, { sum: existing.sum + r.overall_rating, count: existing.count + 1 })
+    }
   }
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-lg font-bold text-gray-900">All Professors</h1>
-        <Link
-          href="/professors/add"
-          className="text-sm bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
-        >
-          + Add Professor
-        </Link>
+
       </div>
       <div className="flex flex-col gap-2">
         {(professors ?? []).map(prof => {

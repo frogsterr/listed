@@ -8,7 +8,7 @@ export default async function TrendingSection() {
 
   const { data: reviews } = await supabase
     .from('reviews')
-    .select('class_id, overall_rating, class:classes(*, professor:professors(id, name, created_at))')
+    .select('class_id, overall_rating, class:classes(*, professor:professors!classes_professor_id_fkey(id, name, created_at))')
     .eq('semester', CURRENT_SEMESTER)
 
   if (!reviews || reviews.length === 0) return null

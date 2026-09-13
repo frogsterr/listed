@@ -1,5 +1,7 @@
 'use server'
 
+import { isAdmin } from '@/lib/admin'
+
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { validateReviewInput } from '@/lib/utils'
@@ -26,10 +28,11 @@ export async function submitReview(input: ReviewInput): Promise<{ error: string 
 }
 
 export async function deleteReview(reviewId: string): Promise<{ error: string | null }> {
+  if (!(await isAdmin())) return { error: 'Admin access required.' }
   const { createServiceClient } = await import('@/lib/supabase/service')
   const supabase = createServiceClient()
   const { error } = await supabase.from('reviews').delete().eq('id', reviewId)
   if (error) return { error: error.message }
-  revalidatePath('/admin')
+  revalidatePath('/', 'layout')
   return { error: null }
 }

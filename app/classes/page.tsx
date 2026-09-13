@@ -34,7 +34,7 @@ export default async function ClassesPage({ searchParams }: PageProps) {
   const [{ data: classes }, { data: reviews }] = await Promise.all([
     supabase
       .from('classes')
-      .select('*, professor:professors(id, name)')
+      .select('*, professor:professors!classes_professor_id_fkey(id, name)')
       .order('title'),
     supabase
       .from('reviews')
@@ -52,7 +52,9 @@ export default async function ClassesPage({ searchParams }: PageProps) {
   const filtered = (classes ?? []).filter(cls => {
     const matchesQuery = query
       ? cls.title.toLowerCase().includes(query.toLowerCase()) ||
-        (cls.professor as unknown as { name: string } | null)?.name?.toLowerCase().includes(query.toLowerCase())
+        (cls.professor as unknown as { name: string } | null)?.name?.toLowerCase().includes(query.toLowerCase()) ||
+        cls.catalog_instructors?.some((name: string) => name.toLowerCase().includes(query.toLowerCase())) ||
+        cls.course_codes?.some((code: string) => code.toLowerCase().includes(query.toLowerCase()))
       : true
     const matchesCategory = params.category ? cls.category === params.category : true
     return matchesQuery && matchesCategory
@@ -61,7 +63,7 @@ export default async function ClassesPage({ searchParams }: PageProps) {
   // Group by title
   const groupMap = new Map<string, ClassGroup>()
   for (const cls of filtered) {
-    const profName = (cls.professor as unknown as { name: string } | null)?.name ?? null
+    const profName = cls.catalog_instructors?.length ? cls.catalog_instructors.join(' / ') : (cls.professor as unknown as { name: string } | null)?.name ?? null
     const stats = statsMap.get(cls.id)
 
     if (!groupMap.has(cls.title)) {
