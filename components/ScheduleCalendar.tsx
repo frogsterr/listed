@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { layoutDayClasses, timeToMinutes } from '@/lib/calendar'
 import { DAYS } from '@/lib/constants'
 import { formatTime } from '@/lib/utils'
-import { classProfessors } from '@/lib/class-professors'
-import type { Class } from '@/lib/types'
+import type { PlannerClass } from '@/lib/course-planner'
+import Rating from '@/components/CourseRating'
+import { subjectColor } from '@/lib/subject-colors'
 import type { Day } from '@/lib/constants'
 
 const HOUR_START = 8
@@ -14,75 +15,36 @@ const HOUR_END = 21
 const TOTAL_HOURS = HOUR_END - HOUR_START
 const SLOT_HEIGHT = 64
 
-const PALETTE = [
-  'bg-blue-500',
-  'bg-emerald-500',
-  'bg-purple-500',
-  'bg-rose-500',
-  'bg-teal-500',
-  'bg-indigo-500',
-  'bg-amber-500',
-  'bg-green-600',
-]
-
-function categoryColor(category: string | null, sortedCategories: string[]): string {
-  if (!category) return 'bg-gray-400'
-  const idx = sortedCategories.indexOf(category)
-  return idx >= 0 ? PALETTE[idx % PALETTE.length] : 'bg-gray-400'
-}
-
-function ClassPopup({ cls, onClose, colorClass }: { cls: Class; onClose: () => void; colorClass: string }) {
-  const professors = classProfessors(cls)
-  const professorNames = professors.map(p => p.name).join(' / ')
+function ClassPopup({ cls, onClose, color }: { cls: PlannerClass; onClose: () => void; color: string }) {
+  const dialog = useRef<HTMLDialogElement>(null)
+  useEffect(() => {
+    const element = dialog.current!
+    element.showModal()
+    return () => element.close()
+  }, [])
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/30" />
-      <div
-        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6"
-        onClick={e => e.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 text-xl leading-none"
-        >
-          ✕
-        </button>
-        <div className="mb-4">
-          {cls.category && (
-            <span className={`inline-block text-[10px] font-bold text-white uppercase tracking-widest px-2 py-0.5 rounded-full ${colorClass}`}>
-              {cls.category}
-            </span>
-          )}
-          <h2 className="text-base font-bold text-gray-900 mt-2 pr-6">{cls.title}</h2>
+    <dialog ref={dialog} aria-labelledby="calendar-course-title" onCancel={onClose}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}
+      className="m-auto w-[calc(100%-2rem)] max-w-sm max-h-[85vh] rounded-2xl bg-white p-0 shadow-2xl backdrop:bg-black/30">
+      <div className="relative p-6">
+        <button aria-label="Close course details" onClick={onClose} className="absolute top-3 right-3 rounded-lg p-2 text-gray-500 hover:bg-gray-100">✕</button>
+        {cls.category && <span className="inline-flex items-center gap-2 pr-8 text-xs text-gray-600"><span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />{cls.category}</span>}
+        <h2 id="calendar-course-title" className="mt-2 pr-6 text-lg font-bold text-gray-900">{cls.title}</h2>
+        <p className="mt-1 text-xs text-gray-500">{cls.course_codes?.join(' / ')}{cls.credits != null ? ` · ${cls.credits} credits` : ''}</p>
+        <div className="my-4 flex flex-col gap-2 text-sm text-gray-600">
+          {cls.professorRatings.length ? cls.professorRatings.map(({ professor }) => <Link key={professor.id} href={`/professors/${professor.id}`} className="text-primary hover:underline">{professor.name}</Link>) : <p>Professor to be announced</p>}
+          <p>{cls.meeting_days.join(', ')} · {formatTime(cls.start_time!)}–{formatTime(cls.end_time!)}</p>
+          <p>{cls.semester}</p>
+          {Boolean(cls.requirements?.length) && <p>Requirements: {cls.requirements!.join(', ')}</p>}
         </div>
-        <div className="flex flex-col gap-2 text-sm text-gray-600 mb-6">
-          {professorNames && (
-            <div className="flex items-center gap-2">
-              <span className="text-gray-300 text-base">👤</span>
-              <span>{professorNames}</span>
-            </div>
-          )}
-          {cls.meeting_days && cls.start_time && (
-            <div className="flex items-center gap-2">
-              <span className="text-gray-300 text-base">🕐</span>
-              <span>{cls.meeting_days.join(', ')} · {formatTime(cls.start_time)}–{formatTime(cls.end_time ?? '')}</span>
-            </div>
-          )}
-          {cls.semester && (
-            <div className="flex items-center gap-2">
-              <span className="text-gray-300 text-base">📅</span>
-              <span>{cls.semester}</span>
-            </div>
-          )}
+        <div className="mb-5 space-y-2 rounded-lg bg-cream p-3">
+          <Rating label="Course" stats={cls.courseRating} />
+          {cls.professorRatings.map(({ professor, stats }) => <Rating key={professor.id} label={professor.name} stats={stats} />)}
+          <p className="text-[11px] text-gray-500">Ratings include past offerings.</p>
         </div>
-        <Link
-          href={`/classes/${cls.id}`}
-          className="block w-full bg-primary text-white text-center py-3 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors"
-        >
-          View Reviews →
-        </Link>
+        <Link href={`/classes/group/${encodeURIComponent(cls.title)}`} className="block rounded-xl bg-primary py-3 text-center text-sm font-semibold text-white hover:bg-primary/90">View reviews →</Link>
       </div>
-    </div>
+    </dialog>
   )
 }
 
@@ -95,36 +57,21 @@ function minutesToHeight(startMin: number, endMin: number): number {
 }
 
 interface Props {
-  classes: Class[]
+  classes: PlannerClass[]
   categories: string[]
-  initialDay?: string
-  showCategoryFilters?: boolean
+  activeDay: Day
+  onDayChange: (day: Day) => void
 }
 
-export default function ScheduleCalendar({ classes, categories, initialDay, showCategoryFilters = true }: Props) {
-  const sortedCategories = [...categories].sort()
-  const [activeDay, setActiveDay] = useState<Day>(DAYS.includes(initialDay as Day) ? initialDay as Day : 'Mon')
-  const [activeCategories, setActiveCategories] = useState<string[]>([])
-  const [selected, setSelected] = useState<Class | null>(null)
-
-  function toggleCategory(cat: string) {
-    setActiveCategories(prev =>
-      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
-    )
-  }
-
-  const filtered = classes
-    .filter(c => c.meeting_days?.includes(activeDay))
-    .filter(c => activeCategories.length === 0 || activeCategories.includes(c.category ?? ''))
-
-  const items = layoutDayClasses(filtered)
-
-  const selectedColor = selected ? categoryColor(selected.category, sortedCategories) : ''
+export default function ScheduleCalendar({ classes, categories, activeDay, onDayChange }: Props) {
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const selected = classes.find(c => c.id === selectedId)
+  const items = layoutDayClasses(classes.filter(c => c.meeting_days?.includes(activeDay)))
 
   return (
     <>
       {selected && (
-        <ClassPopup cls={selected} onClose={() => setSelected(null)} colorClass={selectedColor} />
+        <ClassPopup cls={selected} onClose={() => setSelectedId(null)} color={subjectColor(selected.category, categories)} />
       )}
 
       <div className="p-4 flex flex-col gap-3 border-b border-cream-border">
@@ -133,7 +80,8 @@ export default function ScheduleCalendar({ classes, categories, initialDay, show
           {DAYS.map(day => (
             <button
               key={day}
-              onClick={() => setActiveDay(day)}
+              onClick={() => onDayChange(day)}
+              aria-pressed={activeDay === day}
               className={`flex-1 py-1.5 rounded-lg border text-xs font-bold uppercase tracking-wide transition-colors ${
                 activeDay === day
                   ? 'bg-primary text-white border-primary'
@@ -145,46 +93,7 @@ export default function ScheduleCalendar({ classes, categories, initialDay, show
           ))}
         </div>
 
-        {/* Category filter */}
-        {showCategoryFilters && sortedCategories.length > 0 && (
-          <div className="flex gap-2 flex-wrap items-center">
-            <button
-              onClick={() => setActiveCategories([])}
-              className={`text-xs px-3 py-1 rounded-full border transition-colors ${
-                activeCategories.length === 0
-                  ? 'bg-primary text-white border-primary'
-                  : 'border-cream-border text-gray-500 bg-white hover:border-primary'
-              }`}
-            >
-              All
-            </button>
-            {sortedCategories.map(cat => {
-              const active = activeCategories.includes(cat)
-              const color = categoryColor(cat, sortedCategories)
-              return (
-                <button
-                  key={cat}
-                  onClick={() => toggleCategory(cat)}
-                  className={`text-xs px-3 py-1 rounded-full border transition-colors ${
-                    active
-                      ? `${color} text-white border-transparent`
-                      : 'border-cream-border text-gray-500 bg-white hover:border-gray-400'
-                  }`}
-                >
-                  {cat}
-                </button>
-              )
-            })}
-            {activeCategories.length > 0 && (
-              <button
-                onClick={() => setActiveCategories([])}
-                className="text-xs text-gray-400 hover:text-gray-600 underline ml-1"
-              >
-                Clear
-              </button>
-            )}
-          </div>
-        )}
+        <p role="status" className="text-xs text-gray-500">{items.length} {items.length === 1 ? 'class' : 'classes'} on {activeDay} · Select a class for details</p>
       </div>
 
       {items.length === 0 && <p className="p-4 text-sm text-gray-500">No scheduled classes for {activeDay} with these filters.</p>}
@@ -223,22 +132,24 @@ export default function ScheduleCalendar({ classes, categories, initialDay, show
             const height = minutesToHeight(startMin, endMin)
             const widthPct = 100 / numCols
             const leftPct = (col / numCols) * 100
-            const colorClass = categoryColor(cls.category, sortedCategories)
+            const color = subjectColor(cls.category, categories)
 
             return (
               <button
                 key={cls.id}
-                onClick={() => setSelected(cls)}
+                onClick={() => setSelectedId(cls.id)}
+                aria-label={`${cls.title}, ${cls.category ?? "Uncategorized"}, ${formatTime(cls.start_time!)}–${formatTime(cls.end_time!)}`}
                 style={{
+                  backgroundColor: color,
                   top,
                   height,
                   left: `calc(${leftPct}% + 2px)`,
                   width: `calc(${widthPct}% - 4px)`,
                 }}
-                className={`absolute ${colorClass} text-white text-[10px] rounded-md px-1.5 py-1 overflow-hidden text-left hover:opacity-90 transition-opacity`}
+                className={`absolute text-white text-xs rounded-md px-1.5 py-1 overflow-hidden text-left hover:opacity-90 transition-opacity`}
               >
-                <div className="font-semibold leading-tight truncate">{cls.title}</div>
-                <div className="opacity-80 text-[9px] mt-0.5">
+                <div className="font-semibold leading-tight line-clamp-3">{cls.title}</div>
+                <div className="opacity-80 text-[10px] mt-1">
                   {formatTime(cls.start_time!)}–{formatTime(cls.end_time!)}
                 </div>
               </button>
