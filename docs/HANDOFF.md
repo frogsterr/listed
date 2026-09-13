@@ -24,7 +24,7 @@ Vercel production deployment `Eg73kxApJY8LhsuMAdjGdNuZvJqL` reported success. Pu
 
 ## Remaining data/configuration follow-ups
 
-- Obtain authoritative degree-requirement mappings. The provided RTF contains no such mappings, so `requirements` arrays remain empty and that filter honestly displays “Requirements not available yet.” Department labels are not claims of requirement fulfillment.
+- Obtain authoritative degree-requirement mappings. The provided RTF contains no such mappings, so `requirements` arrays remain empty and the requirement filter is hidden until mappings are available. Department labels are not claims of requirement fulfillment.
 - Confirm whether HIS 3405 and MJS 3405 should be combined: titles differ, but instructor/time/room match. They remain separate pending confirmation.
 - Rotate Supabase secret/service-role keys previously pasted into chat, and update Vercel plus `.env.local`. Rotation has NOT been performed. The existing Vercel service key was marked “Needs Attention” because it was stored as Config rather than Secret.
 
@@ -39,3 +39,10 @@ Admin password is in `.backups/admin-login.txt`, also private/ignored. Do not pa
 Import/deletion logs and backups are in `.backups/`. These operations do not need repeating.
 
 The branch `fix/admin-only-catalog` is retained; it incorporated the older site-improvements PR #2 and fixed its missing authorization. Master contains the final implementation. Read `AGENTS.md` and relevant local Next.js 16 documentation before new code changes. See `supabase/README.md` for maintenance commands.
+
+## Calendar-first update (September 13)
+
+- Schedule now opens on the calendar with a Subject dropdown and collapsed More filters panel. The list is secondary, and switching views preserves the selected weekday and filters.
+- Course details open in a keyboard-accessible dialog with instructor links, historical ratings/review counts, codes, credits, and a link to all course reviews. Subject colors remain stable across filtering; they do not imply degree requirements.
+- Verified desktop/mobile layouts, subject filtering, dialog Escape handling, and weekday preservation across view changes. Existing 45 tests, lint, and production build passed.
+- Also removed the subsequently reported fabricated Intro to Koyfer Avoda Zara course, its four reviews and dependent votes, and its otherwise-unused professor record. Both production pages returned 404. Backup: `.backups/fabricated-koyfer-course-1789327000511.json`. Do not repeat deletion.
