@@ -273,7 +273,8 @@
     "semester": "Fall 2026",
     "category": "Jewish History",
     "course_codes": [
-      "HIS 3405"
+      "HIS 3405",
+      "MJS 3405"
     ],
     "professors": [
       "Rebecca Perten"
@@ -452,24 +453,6 @@
     "meeting_days": [],
     "start_time": null,
     "end_time": null,
-    "credits": 3.0,
-    "requirements": []
-  },
-  {
-    "title": "Jewish Ceremonial Art",
-    "semester": "Fall 2026",
-    "category": "Modern Jewish Studies",
-    "course_codes": [
-      "MJS 3405"
-    ],
-    "professors": [
-      "Rebecca Perten"
-    ],
-    "meeting_days": [
-      "Thu"
-    ],
-    "start_time": "10:10",
-    "end_time": "12:55",
     "credits": 3.0,
     "requirements": []
   },

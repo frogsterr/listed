@@ -65,3 +65,25 @@ it('counts co-taught reviews once per instructor and supports secondary-instruct
   expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, query: 'Professor Two', category: 'JGW', minProfessorRating: 4 }).map(c => c.id)).toEqual(['team'])
   expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, query: 'JGW 3000' }).map(c => c.id)).toEqual(['team'])
 })
+
+it('finds one cross-listed offering under each descriptive subject and each code', () => {
+  const rows = buildPlannerClasses([makeClass('art', {
+    title: 'Jewish Ceremonial Art in Context', category: 'Jewish History',
+    course_codes: ['HIS 3405', 'MJS 3405'], requirements: [],
+  })], [])
+  for (const category of ['Jewish History', 'Modern Jewish Studies']) {
+    expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, category }).map(c => c.id)).toEqual(['art'])
+  }
+  for (const query of ['HIS 3405', 'MJS 3405']) {
+    expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, query }).map(c => c.id)).toEqual(['art'])
+  }
+  expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, category: 'Bible' })).toEqual([])
+  expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, requirement: 'Modern Jewish Studies' })).toEqual([])
+})
+
+it('includes secondary subjects absent from primary category labels', () => {
+  const rows = buildPlannerClasses([makeClass('cross', { course_codes: ['BIB 3224', 'JGW 3224', 'JTH 3224'] })], [])
+  for (const category of ['Bible', "Jewish Gender and Women's Studies", 'Jewish Thought']) {
+    expect(filterPlannerClasses(rows, { ...DEFAULT_FILTERS, category }).map(c => c.id)).toEqual(['cross'])
+  }
+})

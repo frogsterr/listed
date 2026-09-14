@@ -1,3 +1,4 @@
+import { courseSubjects } from '@/lib/course-subjects'
 import { classProfessors } from '@/lib/class-professors'
 import type { Class, Professor } from '@/lib/types'
 
@@ -58,7 +59,7 @@ export function filterPlannerClasses(classes: PlannerClass[], filters: PlannerFi
   const query = filters.query.trim().toLowerCase()
   return classes.filter(c => {
     if (query && !`${c.title} ${(c.course_codes ?? []).join(' ')} ${classProfessors(c).map(p => p.name).join(' ')}`.toLowerCase().includes(query)) return false
-    if (filters.category && c.category !== filters.category && !c.course_codes?.some(code => code.startsWith(`${filters.category} `))) return false
+    if (filters.category && !courseSubjects(c).includes(filters.category) && !c.course_codes?.some(code => code.startsWith(`${filters.category} `))) return false
     if (filters.requirement && !c.requirements?.includes(filters.requirement)) return false
     if (filters.day && !c.meeting_days?.includes(filters.day)) return false
     if (filters.earliest && (!c.start_time || c.start_time < filters.earliest)) return false
