@@ -7,6 +7,7 @@ import { DAYS } from '@/lib/constants'
 import { formatTime } from '@/lib/utils'
 import type { PlannerClass } from '@/lib/course-planner'
 import Rating from '@/components/CourseRating'
+import { courseSubjects } from '@/lib/course-subjects'
 import { subjectColor } from '@/lib/subject-colors'
 import type { Day } from '@/lib/constants'
 
@@ -29,6 +30,7 @@ function ClassPopup({ cls, onClose, color }: { cls: PlannerClass; onClose: () =>
       <div className="relative p-6">
         <button aria-label="Close course details" onClick={onClose} className="absolute top-3 right-3 rounded-lg p-2 text-gray-500 hover:bg-gray-100">✕</button>
         {cls.category && <span className="inline-flex items-center gap-2 pr-8 text-xs text-gray-600"><span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />{cls.category}</span>}
+        {courseSubjects(cls).length > 1 && <p className="mt-2 text-xs text-gray-500">Cross-listed: {courseSubjects(cls).join(' / ')}</p>}
         <h2 id="calendar-course-title" className="mt-2 pr-6 text-lg font-bold text-gray-900">{cls.title}</h2>
         <p className="mt-1 text-xs text-gray-500">{cls.course_codes?.join(' / ')}{cls.credits != null ? ` · ${cls.credits} credits` : ''}</p>
         <div className="my-4 flex flex-col gap-2 text-sm text-gray-600">
@@ -95,7 +97,7 @@ export default function ScheduleCalendar({ classes, categories, activeDay, onDay
         </div>
 
         {visibleSubjects.length > 0 && <div aria-label="Calendar color legend" className="space-y-2">
-          <p className="text-xs font-medium text-gray-600">Colors by subject</p>
+          <p className="text-xs font-medium text-gray-600">Colors by primary subject</p>
           <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-gray-600">
             {visibleSubjects.map(subject => <li key={subject ?? 'uncategorized'} className="flex items-center gap-1.5">
               <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: subjectColor(subject, categories) }} />

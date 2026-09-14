@@ -25,7 +25,7 @@ Vercel production deployment `Eg73kxApJY8LhsuMAdjGdNuZvJqL` reported success. Pu
 ## Remaining data/configuration follow-ups
 
 - Obtain authoritative degree-requirement mappings. The provided RTF contains no such mappings, so `requirements` arrays remain empty and the requirement filter is hidden until mappings are available. Department labels are not claims of requirement fulfillment.
-- Confirm whether HIS 3405 and MJS 3405 should be combined: titles differ, but instructor/time/room match. They remain separate pending confirmation.
+- HIS 3405 / MJS 3405 merge is complete following owner confirmation; see below.
 - Rotate Supabase secret/service-role keys previously pasted into chat, and update Vercel plus `.env.local`. Rotation has NOT been performed. The existing Vercel service key was marked “Needs Attention” because it was stored as Config rather than Secret.
 
 ## Source and private files
@@ -46,3 +46,10 @@ The branch `fix/admin-only-catalog` is retained; it incorporated the older site-
 - Course details open in a keyboard-accessible dialog with instructor links, historical ratings/review counts, codes, credits, and a link to all course reviews. Subject colors remain stable across filtering; they do not imply degree requirements.
 - Verified desktop/mobile layouts, subject filtering, dialog Escape handling, and weekday preservation across view changes. Existing 45 tests, lint, and production build passed.
 - Also removed the subsequently reported fabricated Intro to Koyfer Avoda Zara course, its four reviews and dependent votes, and its otherwise-unused professor record. Both production pages returned 404. Backup: `.backups/fabricated-koyfer-course-1789327000511.json`. Do not repeat deletion.
+
+## Cross-listing update (September 13)
+
+- Owner confirmed HIS 3405 and MJS 3405 are the same offering. Production now retains `32f51910-0ea0-4992-8694-16da559ff50b`, titled “Jewish Ceremonial Art in Context,” with both codes. Removed duplicate `2bbc7efb-0761-48ce-9782-1c2f72ffc569`. Neither had reviews. Private backup: `.backups/ceremonial-art-merge-1789349512689.json`.
+- Updated source JSON: 33 offerings, 21 scheduled, 12 unscheduled; still 39 academic listings. Import dry-run confirms 0 inserts, 33 already present.
+- Planner subject filters now include secondary subjects from verified cross-listed code prefixes. All subjects appear in course details; calendar blocks remain single and use the primary subject color, as stated in the legend.
+- 47 tests, lint, TypeScript, and build pass. Browser verified filtering by Modern Jewish Studies finds the merged course once, with both subjects/codes in its dialog.

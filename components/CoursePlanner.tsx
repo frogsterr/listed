@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import type { Day } from '@/lib/constants'
+import { courseSubjects } from '@/lib/course-subjects'
 import { subjectColor } from '@/lib/subject-colors'
 import Rating from '@/components/CourseRating'
 import { formatTime } from '@/lib/utils'
@@ -16,7 +17,7 @@ export default function CoursePlanner({ classes }: { classes: PlannerClass[] }) 
   const [activeDay, setActiveDay] = useState<Day>('Mon')
   const update = <K extends keyof PlannerFilters>(key: K, value: PlannerFilters[K]) => setFilters(prev => ({ ...prev, [key]: value }))
   const requirements = [...new Set(classes.flatMap(c => c.requirements ?? []))].sort()
-  const categories = [...new Set(classes.flatMap(c => c.category ? [c.category] : []))].sort()
+  const categories = [...new Set(classes.flatMap(courseSubjects))].sort()
   const extraFilterCount = [filters.query.trim(), filters.requirement, filters.earliest, filters.latest, filters.minCourseRating, filters.minProfessorRating, filters.minReviews].filter(Boolean).length
   const hasFilters = Boolean(filters.category || extraFilterCount)
   const results = filterPlannerClasses(classes, filters)
@@ -82,7 +83,7 @@ export default function CoursePlanner({ classes }: { classes: PlannerClass[] }) 
       {unscheduled > 0 && <button onClick={() => setView('list')} className="self-start text-xs text-gray-500 hover:text-primary">{unscheduled} {unscheduled === 1 ? 'offering' : 'offerings'} without meeting times · View in list →</button>}
     </> : <div className="grid gap-3 md:grid-cols-2">
       {results.map(c => <article key={c.id} className="bg-white rounded-xl border border-cream-border p-4 flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-xs text-gray-600"><span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ backgroundColor: subjectColor(c.category, categories) }} />{c.category ?? 'Uncategorized'} · {c.semester}</div>
+        <div className="flex items-center gap-2 text-xs text-gray-600"><span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ backgroundColor: subjectColor(c.category, categories) }} />{courseSubjects(c).join(' / ') || 'Uncategorized'} · {c.semester}</div>
         <Link href={`/classes/group/${encodeURIComponent(c.title)}`} className="font-semibold text-gray-900 hover:text-primary">{c.title}</Link>
         <p className="text-xs text-gray-500">{c.course_codes?.join(' / ')}{c.credits != null ? ` · ${c.credits} credit${c.credits === 1 ? '' : 's'}` : ''}</p>
         {c.professorRatings.length ? c.professorRatings.map(({ professor }) => <Link key={professor.id} className="text-sm text-primary" href={`/professors/${professor.id}`}>{professor.name}</Link>) : <p className="text-sm text-gray-500">Professor to be announced</p>}
