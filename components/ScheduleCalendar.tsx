@@ -67,6 +67,7 @@ export default function ScheduleCalendar({ classes, categories, activeDay, onDay
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const selected = classes.find(c => c.id === selectedId)
   const items = layoutDayClasses(classes.filter(c => c.meeting_days?.includes(activeDay)))
+  const visibleSubjects = [...new Set(items.map(({ cls }) => cls.category))].sort((a, b) => (a ?? '').localeCompare(b ?? ''))
 
   return (
     <>
@@ -93,6 +94,15 @@ export default function ScheduleCalendar({ classes, categories, activeDay, onDay
           ))}
         </div>
 
+        {visibleSubjects.length > 0 && <div aria-label="Calendar color legend" className="space-y-2">
+          <p className="text-xs font-medium text-gray-600">Colors by subject</p>
+          <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-gray-600">
+            {visibleSubjects.map(subject => <li key={subject ?? 'uncategorized'} className="flex items-center gap-1.5">
+              <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: subjectColor(subject, categories) }} />
+              {subject ?? 'Uncategorized'}
+            </li>)}
+          </ul>
+        </div>}
         <p role="status" className="text-xs text-gray-500">{items.length} {items.length === 1 ? 'class' : 'classes'} on {activeDay} · Select a class for details</p>
       </div>
 

@@ -1,4 +1,4 @@
-const COLORS = ['#3b82f6', '#10b981', '#a855f7', '#f43f5e', '#14b8a6', '#6366f1', '#f59e0b', '#16a34a']
+const COLORS = ['#3b82f6', '#10b981', '#a855f7', '#f43f5e', '#14b8a6', '#6366f1', '#f59e0b', '#16a34a', '#be185d', '#a16207', '#0e7490', '#7c3aed', '#475569', '#c2410c']
 
 // Always use the full semester's subject list so filtering does not change colors.
 export function subjectColor(subject: string | null, subjects: string[]): string {
