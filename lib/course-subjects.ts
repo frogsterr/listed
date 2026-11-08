@@ -1,10 +1,11 @@
 import type { Class } from '@/lib/types'
 
-// Prefixes used by the verified Fall catalog's cross-listings.
+// Prefixes used by the verified catalogs' cross-listings.
 // JGW: https://www.jtsa.edu/jewish-gender-and-womens-studies/
 const CROSS_LIST_SUBJECTS: Record<string, string> = {
   BIB: 'Bible', ETH: 'Jewish Ethics', HIS: 'Jewish History',
   JGW: "Jewish Gender and Women's Studies", JTH: 'Jewish Thought',
+  LIT: 'Jewish Literature',
   MED: 'Medieval Jewish Studies', MJS: 'Modern Jewish Studies',
 }
 
