@@ -1,4 +1,23 @@
-# LISTED — production status, September 13, 2026
+# LISTED — maintenance handoff
+
+## Spring 2027 maintenance, November 8, 2026
+
+Working checkout: `/Users/benshv/Documents/Codex/2026-11-08/new-chat/listed`, branch `update/spring-2027`. Original checkout `/Users/benshv/listed` is unchanged. Base commit is `faeffcd61df501635de16d6733a7ee67222812d3`, also confirmed as the current GitHub master head in the browser.
+
+- Owner explicitly selected List-accessible courses. Read the signed-in live MyJTS Spring 2027 List College search, both pages, after clearing meeting-day restrictions. List / Graduate returned zero rows. Snapshot: `data/spring-2027-source.json`.
+- Prepared 30 offerings from 36 rows: 17 scheduled, 12 honors theses, one thesis-writing seminar by appointment. Merge two exact cross-list pairs, retain 32 academic codes, exclude four registration placeholders. Preserve SEM 1012's two instructors. TBA stays unassigned.
+- Added Benjamin D Sommer, Evan G Parks, and Jonathan Milgram after matching against the existing directory. The import ignores punctuation in initials to avoid duplicate faculty.
+- Prepared the Spring 2027 selector/default and LIT cross-list subject mapping. Both 2026 semesters remain.
+- Existing generic importer accepts `data/spring-2027.json`. Alternative `supabase/import-spring-2027.sql` performs the import in a transaction through Supabase's SQL editor. It rejects ambiguous professors and conflicting offerings, preserves prior semesters/reviews, and is idempotent. Do not run concurrent imports or reapply schema upgrades.
+- Validation: all 47 existing tests passed, the new PostgreSQL import regression test passed, and TypeScript passed. Regression checks cover faculty matching, 30 offerings/16 teaching assignments, retry idempotence, review preservation, conflict rejection, and rollback.
+- Local build could not download the existing Inter Google Font because DNS/network access is restricted. No font or build configuration was changed to work around it.
+- Applied `supabase/import-spring-2027.sql` successfully through the signed-in production SQL editor. Read-only verification returned 30 Spring offerings, 17 scheduled offerings, 16 teaching assignments, and 72 professors (69 before import). All 43 existing reviews remain. The import is complete; do not repeat it as a deployment step.
+- MDS 3999 is categorized as Multidisciplinary Studies, following the official department dropdown.
+- The local shell cannot reach GitHub/Supabase; the connected GitHub account has read-only access. Source publication uses the owner's signed-in GitHub browser session and the existing Vercel integration.
+
+The source update sets Spring 2027 as the default and retains both 2026 options. Before reporting publication as complete, check the corresponding GitHub/Vercel deployment and verify the live chooser and new professor pages. Database import success alone does not prove that the new default is deployed.
+
+## Production status, September 13, 2026
 
 ## Completed and deployed
 

@@ -1,0 +1,506 @@
+[
+  {
+    "title": "Introduction to Biblical Literature II: Nevi'im/Prophets",
+    "semester": "Spring 2027",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 1211"
+    ],
+    "professors": [
+      "Ronald Androphy"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "13:05",
+    "end_time": "14:20",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Historical Critical Methodologies",
+    "semester": "Spring 2027",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 3009"
+    ],
+    "professors": [
+      "Benjamin D Sommer"
+    ],
+    "meeting_days": [
+      "Tue"
+    ],
+    "start_time": "10:10",
+    "end_time": "12:55",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Medieval Jews and Christians Read Scripture",
+    "semester": "Spring 2027",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 3515"
+    ],
+    "professors": [
+      "Loraine Enlow"
+    ],
+    "meeting_days": [
+      "Thu"
+    ],
+    "start_time": "17:35",
+    "end_time": "20:15",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (BIB)",
+    "semester": "Spring 2027",
+    "category": "Bible",
+    "course_codes": [
+      "BIB 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Jurisprudential Theory and Halakhah",
+    "semester": "Spring 2027",
+    "category": "Jewish Ethics",
+    "course_codes": [
+      "ETH 3323",
+      "JTH 3323"
+    ],
+    "professors": [
+      "Emmanuel Joel Bloch"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "13:05",
+    "end_time": "14:20",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (ETH)",
+    "semester": "Spring 2027",
+    "category": "Jewish Ethics",
+    "course_codes": [
+      "ETH 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Hebrew Alef 2",
+    "semester": "Spring 2027",
+    "category": "Hebrew",
+    "course_codes": [
+      "HEB 1101"
+    ],
+    "professors": [],
+    "meeting_days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu"
+    ],
+    "start_time": "10:10",
+    "end_time": "11:25",
+    "credits": 6,
+    "requirements": []
+  },
+  {
+    "title": "Hebrew Alef 3",
+    "semester": "Spring 2027",
+    "category": "Hebrew",
+    "course_codes": [
+      "HEB 2103"
+    ],
+    "professors": [],
+    "meeting_days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu"
+    ],
+    "start_time": "10:10",
+    "end_time": "11:25",
+    "credits": 6,
+    "requirements": []
+  },
+  {
+    "title": "Hebrew Bet 1",
+    "semester": "Spring 2027",
+    "category": "Hebrew",
+    "course_codes": [
+      "HEB 2201"
+    ],
+    "professors": [
+      "Ilona Ben-Moshe"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed",
+      "Thu"
+    ],
+    "start_time": "08:40",
+    "end_time": "09:55",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Between Identity and Ideology: Nationalism and the Jewish Question",
+    "semester": "Spring 2027",
+    "category": "Jewish History",
+    "course_codes": [
+      "HIS 3312"
+    ],
+    "professors": [
+      "Brian M Smollett"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (HIS)",
+    "semester": "Spring 2027",
+    "category": "Jewish History",
+    "course_codes": [
+      "HIS 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (IDS)",
+    "semester": "Spring 2027",
+    "category": "Interdisciplinary Studies",
+    "course_codes": [
+      "IDS 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Golems, Dybbuks & the Supernatural in Modern Jewish Literature & Culture",
+    "semester": "Spring 2027",
+    "category": "Jewish Literature",
+    "course_codes": [
+      "JGW 3530",
+      "LIT 3530"
+    ],
+    "professors": [
+      "Beverly J Bailis"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "14:45",
+    "end_time": "16:00",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (JTH)",
+    "semester": "Spring 2027",
+    "category": "Jewish Thought",
+    "course_codes": [
+      "JTH 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "List College Fellows: Poetry After Auschwitz",
+    "semester": "Spring 2027",
+    "category": "Jewish Literature",
+    "course_codes": [
+      "LIT 3476"
+    ],
+    "professors": [
+      "Evan G Parks"
+    ],
+    "meeting_days": [
+      "Thu"
+    ],
+    "start_time": "17:35",
+    "end_time": "20:15",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Sephardi and Mizrahi Worlds in Jewish Literature",
+    "semester": "Spring 2027",
+    "category": "Jewish Literature",
+    "course_codes": [
+      "LIT 3922"
+    ],
+    "professors": [
+      "David Haziza"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "13:05",
+    "end_time": "14:20",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (LIT)",
+    "semester": "Spring 2027",
+    "category": "Jewish Literature",
+    "course_codes": [
+      "LIT 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (LTG)",
+    "semester": "Spring 2027",
+    "category": "Liturgy",
+    "course_codes": [
+      "LTG 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (MDS)",
+    "semester": "Spring 2027",
+    "category": "Multidisciplinary Studies",
+    "course_codes": [
+      "MDS 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (MED)",
+    "semester": "Spring 2027",
+    "category": "Medieval Jewish Studies",
+    "course_codes": [
+      "MED 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (MID)",
+    "semester": "Spring 2027",
+    "category": "Midrash",
+    "course_codes": [
+      "MID 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (MJS)",
+    "semester": "Spring 2027",
+    "category": "Modern Jewish Studies",
+    "course_codes": [
+      "MJS 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Introduction to Talmud Level 2: The Defiant Child",
+    "semester": "Spring 2027",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 3002"
+    ],
+    "professors": [
+      "Ronald Androphy"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "14:45",
+    "end_time": "16:00",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Intermediate Talmud: The Power of Shabbat...or Not",
+    "semester": "Spring 2027",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 3214"
+    ],
+    "professors": [
+      "Ronald Androphy"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "16:10",
+    "end_time": "17:25",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Advanced Talmud: Capital Punishment in Rabbinic Literature",
+    "semester": "Spring 2027",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 3624"
+    ],
+    "professors": [
+      "Richard Kalmin"
+    ],
+    "meeting_days": [
+      "Mon"
+    ],
+    "start_time": "14:45",
+    "end_time": "17:25",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Codes for Talmud Majors and Others",
+    "semester": "Spring 2027",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 3809"
+    ],
+    "professors": [
+      "Jonathan Milgram"
+    ],
+    "meeting_days": [
+      "Tue",
+      "Thu"
+    ],
+    "start_time": "13:05",
+    "end_time": "14:20",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Honors Thesis (RLC)",
+    "semester": "Spring 2027",
+    "category": "Talmud and Rabbinics",
+    "course_codes": [
+      "RLC 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Foundations of the Jewish Canon II",
+    "semester": "Spring 2027",
+    "category": "Seminar",
+    "course_codes": [
+      "SEM 1012"
+    ],
+    "professors": [
+      "Sandra Fox",
+      "Isaac Y Landes"
+    ],
+    "meeting_days": [
+      "Mon",
+      "Wed"
+    ],
+    "start_time": "11:40",
+    "end_time": "12:55",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "List College Capstone Seminar",
+    "semester": "Spring 2027",
+    "category": "Seminar",
+    "course_codes": [
+      "SEM 3001"
+    ],
+    "professors": [
+      "Rebecca Perten"
+    ],
+    "meeting_days": [
+      "Thu"
+    ],
+    "start_time": "10:10",
+    "end_time": "12:55",
+    "credits": 3,
+    "requirements": []
+  },
+  {
+    "title": "Thesis Writing Seminar",
+    "semester": "Spring 2027",
+    "category": "Seminar",
+    "course_codes": [
+      "SEM 3999"
+    ],
+    "professors": [],
+    "meeting_days": [],
+    "start_time": null,
+    "end_time": null,
+    "credits": 3,
+    "requirements": []
+  }
+]

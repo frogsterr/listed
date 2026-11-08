@@ -1,8 +1,9 @@
-export const CURRENT_SEMESTER = 'Fall 2026'
+export const CURRENT_SEMESTER = 'Spring 2027'
 
 export const SEMESTERS = [
   'Spring 2026',
   'Fall 2026',
+  'Spring 2027',
 ]
 
 export const WORKLOAD_LABELS: Record<number, string> = {
