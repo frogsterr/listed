@@ -1,4 +1,34 @@
-# Fall 2026 catalog
+# Verified catalogs
+
+## Spring 2027
+
+Source: the live [MyJTS course search](https://my.jtsa.edu/ICS/Courses/), read on November 8, 2026. The site owner requested List-accessible courses. Selected `2026-2027 - Spring Semester`, List College, all departments, all meeting days, and open or full sections; other filters were unrestricted. Both result pages were captured. A separate unrestricted `List / Graduate` search returned no rows.
+
+`spring-2027-source.json` retains the 36 academic/registration rows and search provenance, without account or enrollment information. `spring-2027.json` contains 30 offerings: 17 scheduled, 12 department-specific honors theses, and one thesis-writing seminar by appointment. These represent 32 academic source listings and 14 named instructors. Four registration placeholders are recorded in `spring-2027-excluded.json`.
+
+Normalization decisions:
+
+- Combine ETH/JTH 3323 and JGW/LIT 3530 because title, faculty, meeting times, and credits match exactly; retain both codes and subjects.
+- Retain both Sandra Fox and Isaac Y Landes as instructors for SEM 1012.
+- Leave HEB 1101, HEB 2103, and SEM 3999 unassigned because the source says `TBA, Instructor`; do not create a professor named TBA.
+- Preserve JTS local meeting times; `R` means Thursday. HEB 2201 meets Monday, Wednesday, and Thursday, not Tuesday.
+- Normalize title casing, expand `INTRO`/`MOD.` in display titles, and correct the source typo `ADVACED` to `Advanced` for RLC 3624. Keep original text in the source snapshot.
+- Qualify honors-thesis titles by department, consistent with Fall 2026. Retain exact existing titles for returning classes where applicable.
+- Convert names to first-name-first order and ignore punctuation in initials when matching existing professors. The live professor directory lacked Benjamin D Sommer, Evan G Parks, and Jonathan Milgram at review time; the importer checks again before inserting.
+- Omit enrollment availability and dates from application data; this is a catalog snapshot. Leave unknown degree requirements empty.
+
+Import through the existing reviewed dry-run/apply workflow:
+
+```sh
+node --env-file=.env.local scripts/import-courses.mjs data/spring-2027.json
+node --env-file=.env.local scripts/import-courses.mjs data/spring-2027.json --apply
+```
+
+Alternatively, `supabase/import-spring-2027.sql` applies the same snapshot atomically in the production SQL editor, rejecting ambiguous or conflicting records and preserving all previous semesters and reviews. Use one import method, not concurrent runs. Rerunning an unchanged snapshot is safe.
+
+Deploy the semester selector/default changes only after the import succeeds. Existing Spring/Fall 2026 options remain available.
+
+## Fall 2026
 
 Source: `/Users/benshv/Downloads/Fall 2026 JTS Courses.rtf`, provided by the site owner. Extracted with macOS `textutil`. This is a saved registration-search snapshot, not a live enrollment feed.
 
