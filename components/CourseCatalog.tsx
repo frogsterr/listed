@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { CURRENT_SEMESTER, DAYS, SEMESTERS } from '@/lib/constants'
 import { formatTime } from '@/lib/utils'
 import type { PlannerClass, RatingStats } from '@/lib/course-planner'
-import { CATALOG_SUBJECTS, DEFAULT_CATALOG_FILTERS, catalogUrl, filterCatalogClasses, hasAvailability, readCatalogFilters, type CatalogFilters } from '@/lib/class-catalog'
+import { CATALOG_SUBJECTS, DEFAULT_CATALOG_FILTERS, catalogUrl, filterCatalogClasses, groupCatalogClasses, hasAvailability, readCatalogFilters, type CatalogFilters } from '@/lib/class-catalog'
 
 const field = 'w-full rounded-xl border border-cream-border bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/30'
 const selectField = `${field} appearance-none py-3 pl-4 pr-12 text-sm font-medium`
@@ -21,9 +21,35 @@ function Chevron() {
 function Rating({ label, stats, prominent = false }: { label: string; stats: RatingStats; prominent?: boolean }) {
   const description = stats.average === null ? `${label}: no reviews` : `${label}: ${stats.average.toFixed(1)} out of 5, ${stats.count} review${stats.count === 1 ? '' : 's'}`
   return <span aria-label={description} title={`${description}. Ratings include past semesters.`} className="inline-flex shrink-0 items-baseline gap-1 whitespace-nowrap tabular-nums">
-    <span aria-hidden="true" className={`${prominent ? 'text-2xl' : 'text-lg'} font-bold text-gray-900`}>{stats.average === null ? '—' : stats.average.toFixed(1)}</span>
+    <span aria-hidden="true" className={`${prominent ? 'text-xl' : 'text-sm'} font-bold text-gray-900`}>{stats.average === null ? '—' : stats.average.toFixed(1)}</span>
     {stats.average !== null && <><span aria-hidden="true" className="text-sm text-primary">★</span><span aria-hidden="true" className="text-xs text-gray-500">({stats.count})</span></>}
   </span>
+}
+
+const rowColumns = 'md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_10.5rem_4.5rem]'
+
+function CourseRow({ course, showSemester, grouped }: { course: PlannerClass; showSemester: boolean; grouped: boolean }) {
+  const Heading = grouped ? 'h3' : 'h2'
+  const code = `${course.course_codes?.join(' / ') || course.category || 'Course'}${showSemester ? ` · ${course.semester}` : ''}`
+  const days = course.meeting_days?.join(' / ')
+  const time = course.start_time && course.end_time ? `${formatTime(course.start_time)}–${formatTime(course.end_time)}` : 'Time TBA'
+  const tag = <span className="rounded bg-cream px-1.5 py-0.5 text-[11px] font-semibold text-primary">{code}</span>
+  return <article className={`grid grid-cols-[minmax(0,1fr)_4rem] items-center gap-x-4 gap-y-1.5 px-4 py-3 md:py-2.5 ${rowColumns}`}>
+    <div className="col-start-1 row-start-1 min-w-0">
+      <Heading className="inline text-base font-bold leading-snug text-gray-900"><Link href={`/classes/group/${encodeURIComponent(course.title)}`} className="hover:text-primary">{course.title}</Link></Heading>
+      <span className="ml-2 hidden align-middle md:inline">{tag}</span>
+    </div>
+    <div className="col-start-1 row-start-2 min-w-0 space-y-1 md:col-start-2 md:row-start-1">
+      {course.professorRatings.length > 0 ? course.professorRatings.map(({ professor, stats }) => <div key={professor.id} className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5"><Link href={`/professors/${professor.id}`} className="text-sm font-semibold text-gray-800 hover:text-primary">{professor.name}</Link><Rating label={professor.name} stats={stats} /></div>)
+        : <p className="text-sm font-medium text-gray-600">{course.catalog_instructors?.join(' / ') || 'Professor TBA'}</p>}
+    </div>
+    <div className="col-span-2 col-start-1 row-start-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-gray-600 md:col-span-1 md:col-start-3 md:row-start-1 md:block">
+      <span className="md:hidden">{tag}</span>
+      {days && <span className="md:block">{days}<span className="ml-2 md:hidden">·</span></span>}
+      <span className="md:mt-0.5 md:block">{time}</span>
+    </div>
+    <div className="col-start-2 row-span-2 row-start-1 self-start text-right md:col-start-4 md:row-span-1 md:self-center"><Rating label="Course" stats={course.courseRating} prominent /><p className="text-[10px] text-gray-500 md:hidden">Course</p></div>
+  </article>
 }
 
 export default function CourseCatalog({ classes }: { classes: PlannerClass[] }) {
@@ -41,8 +67,10 @@ export default function CourseCatalog({ classes }: { classes: PlannerClass[] }) 
   }, [subjectsOpen])
 
   const results = filterCatalogClasses(classes, filters)
+  const groups = filters.sort === 'subject' ? groupCatalogClasses(results, filters.subjects) : [{ subject: '', classes: results }]
+  const hiddenTheses = filters.showHonorsTheses ? 0 : filterCatalogClasses(classes, { ...filters, showHonorsTheses: true }).length - results.length
   const availability = hasAvailability(filters)
-  const hasFilters = Boolean(filters.query || filters.subjects.length || filters.topic || availability || filters.sort !== 'title')
+  const hasFilters = Boolean(filters.query || filters.subjects.length || filters.topic || availability || filters.sort !== 'subject' || filters.showHonorsTheses)
   const semesters = [...new Set([CURRENT_SEMESTER, ...SEMESTERS.slice().reverse(), ...classes.map(c => c.semester), filters.semester])].filter(s => s && s !== 'all')
   const start = filters.earliest ? minutes(filters.earliest) : 0
   const finish = filters.latest ? minutes(filters.latest) : 1440
@@ -72,7 +100,7 @@ export default function CourseCatalog({ classes }: { classes: PlannerClass[] }) 
   return <div className="mx-auto max-w-6xl px-4 py-7 sm:py-9">
     <div className="mb-5 flex items-center justify-between gap-4">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">Classes</h1>
-      <div className="relative w-44 shrink-0">
+      <div className="relative w-40 shrink-0 sm:w-44">
         <select aria-label="Semester" className={selectField} value={filters.semester} onChange={e => update({ semester: e.target.value, topic: '' })}>
           {semesters.map(s => <option key={s}>{s}</option>)}<option value="all">All semesters</option>
         </select><Chevron />
@@ -131,28 +159,19 @@ export default function CourseCatalog({ classes }: { classes: PlannerClass[] }) 
       {filters.topic && <button onClick={() => update({ topic: '' })} className="mt-3 text-xs text-primary" aria-label={`Remove ${filters.topic}`}>{filters.topic} ×</button>}
     </div>
 
-    <div className="my-5 flex items-center justify-between gap-3">
+    <div className="my-5 flex flex-wrap items-center justify-between gap-3">
       <div className="flex items-center gap-4"><p role="status" aria-live="polite" className="text-sm font-semibold text-gray-800">{results.length} {results.length === 1 ? 'course' : 'courses'}</p>{hasFilters && <button onClick={clearFilters} className="text-xs text-gray-600 underline underline-offset-2">Clear filters</button>}</div>
-      <div className="relative w-40"><select aria-label="Sort classes" className={`${field} appearance-none py-2 pl-4 pr-12 text-sm font-medium`} value={filters.sort} onChange={e => update({ sort: e.target.value as CatalogFilters['sort'] })}><option value="title">Title A–Z</option><option value="rating">Highest rated</option></select><Chevron /></div>
+      <div className="relative w-40 shrink-0"><select aria-label="Sort classes" className={`${field} appearance-none py-2 pl-4 pr-12 text-sm font-medium`} value={filters.sort} onChange={e => update({ sort: e.target.value as CatalogFilters['sort'] })}><option value="subject">By subject</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option></select><Chevron /></div>
     </div>
 
-    {!results.length ? <div className="rounded-xl border border-cream-border bg-white px-5 py-12 text-center"><h2 className="font-semibold text-gray-900">No matching courses</h2><button onClick={clearFilters} className="mt-3 text-sm text-primary underline">Clear filters</button></div>
-      : <div className="grid gap-4 lg:grid-cols-2">{results.map(course => {
-        const schedule = [course.meeting_days?.join(' / '), course.start_time && course.end_time ? `${formatTime(course.start_time)}–${formatTime(course.end_time)}` : 'Time TBA'].filter(Boolean).join(' · ')
-        return <article key={course.id} className="flex min-w-0 flex-col rounded-2xl border border-cream-border bg-white p-5 sm:p-6">
-          <div className="flex items-start justify-between gap-4">
-            <h2 className="text-xl font-bold leading-snug tracking-tight text-gray-900"><Link href={`/classes/group/${encodeURIComponent(course.title)}`} className="hover:text-primary">{course.title}</Link></h2>
-            <div className="shrink-0 text-right"><Rating label="Course" stats={course.courseRating} prominent /><p className="text-[11px] font-medium text-gray-500">Course</p></div>
-          </div>
-          <div className="mb-5 mt-4 space-y-2">
-            {course.professorRatings.length > 0 ? course.professorRatings.map(({ professor, stats }) => <div key={professor.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1"><Link href={`/professors/${professor.id}`} className="text-base font-semibold text-gray-800 hover:text-primary">{professor.name}</Link><Rating label={professor.name} stats={stats} /></div>)
-              : <p className="text-base font-semibold text-gray-700">{course.catalog_instructors?.join(' / ') || 'Professor TBA'}</p>}
-          </div>
-          <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
-            <span className="rounded-md bg-cream px-2 py-1 font-semibold text-primary">{course.course_codes?.join(' / ') || course.category || 'Course'}{filters.semester === 'all' ? ` · ${course.semester}` : ''}</span>
-            <span className="font-medium text-gray-600">{schedule}</span>
-          </div>
-        </article>
-      })}</div>}
+    {!results.length ? <div className="rounded-xl border border-cream-border bg-white px-5 py-10 text-center"><h2 className="font-semibold text-gray-900">No matching courses</h2><button onClick={clearFilters} className="mt-3 text-sm text-primary underline">Clear filters</button></div>
+      : <div>
+        <div aria-hidden="true" className={`mb-2 hidden gap-x-4 px-4 text-[11px] font-semibold text-gray-500 md:grid ${rowColumns}`}><span>Course</span><span>Professor</span><span>Time</span><span className="whitespace-nowrap text-right">Course rating</span></div>
+        <div className="space-y-3">{groups.map(group => <section key={group.subject || 'all'} aria-label={group.subject || 'Courses'} className="overflow-hidden rounded-xl border border-cream-border bg-white">
+          {group.subject && <h2 className="flex items-center gap-2 border-b border-cream-border bg-cream/60 px-4 py-2 text-sm font-bold text-gray-800">{group.subject}<span className="text-xs font-normal text-gray-500">{group.classes.length}</span></h2>}
+          <div className="divide-y divide-cream-border">{group.classes.map(course => <CourseRow key={course.id} course={course} showSemester={filters.semester === 'all'} grouped={Boolean(group.subject)} />)}</div>
+        </section>)}</div>
+      </div>}
+    {(hiddenTheses > 0 || filters.showHonorsTheses) && <button onClick={() => update({ showHonorsTheses: !filters.showHonorsTheses, topic: filters.topic === 'Honors Theses' ? '' : filters.topic })} className="mt-5 text-xs text-gray-500 underline underline-offset-2">{filters.showHonorsTheses ? 'Hide honors theses' : `Show honors theses (${hiddenTheses})`}</button>}
   </div>
 }

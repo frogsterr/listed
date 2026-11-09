@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { buildPlannerClasses } from '@/lib/course-planner'
-import { CATALOG_SUBJECTS, DEFAULT_CATALOG_FILTERS as defaults, catalogTaxonomy, catalogUrl, filterCatalogClasses, readCatalogFilters } from '@/lib/class-catalog'
+import { CATALOG_SUBJECTS, DEFAULT_CATALOG_FILTERS as defaults, catalogTaxonomy, catalogUrl, filterCatalogClasses, groupCatalogClasses, readCatalogFilters } from '@/lib/class-catalog'
 import type { Class } from '@/lib/types'
 
 function course(id: string, overrides: Partial<Class> = {}): Class {
@@ -80,5 +80,36 @@ describe('course catalog subjects and discovery', () => {
     const matches = filterCatalogClasses(courses, { ...defaults, subjects: ['Bible', 'Jewish Literature', "Gender & Women's Studies"] })
     expect(matches.map(c => c.id).sort()).toEqual(['bible', 'cross'])
     expect(readCatalogFilters(new URLSearchParams('subjects=Bible,Bible,Unknown,Hebrew')).subjects).toEqual(['Bible', 'Hebrew'])
+  })
+})
+
+
+describe('compact subject browsing', () => {
+  it('hides honors theses by default without hiding ordinary seminars or losing the opt-in URL', () => {
+    const courses = buildPlannerClasses([
+      course('ordinary'), course('honors', { title: 'Honors Thesis (BIB)', category: 'Bible' }),
+      course('seminar', { title: 'Thesis Writing Seminar', category: 'Seminar' }),
+    ], [])
+    expect(defaults.sort).toBe('subject')
+    expect(filterCatalogClasses(courses, defaults).map(c => c.id)).toEqual(['ordinary', 'seminar'])
+    const expanded = { ...defaults, showHonorsTheses: true }
+    expect(filterCatalogClasses(courses, expanded)).toHaveLength(3)
+    expect(readCatalogFilters(new URL(catalogUrl(expanded), 'https://julpa.org').searchParams)).toEqual(expanded)
+    expect(readCatalogFilters(new URLSearchParams('sort=title')).sort).toBe('title')
+    expect(readCatalogFilters(new URLSearchParams('sort=unknown')).sort).toBe('subject')
+  })
+
+  it('groups by subject once per offering and uses a selected cross-listed subject', () => {
+    const courses = buildPlannerClasses([
+      course('cross', { title: 'Golems', category: 'Jewish Literature', course_codes: ['JGW 3530', 'LIT 3530'] }),
+      course('bible', { category: 'Bible' }), course('hebrew'),
+      course('seminar', { category: 'Seminar' }),
+    ], [])
+    const groups = groupCatalogClasses(filterCatalogClasses(courses, defaults))
+    expect(groups.map(g => g.subject)).toEqual(['Bible', 'Jewish Literature', 'Hebrew', 'Other courses'])
+    expect(groups.flatMap(g => g.classes.map(c => c.id)).sort()).toEqual(['bible', 'cross', 'hebrew', 'seminar'])
+    const subjects = ["Gender & Women's Studies"]
+    const matching = filterCatalogClasses(courses, { ...defaults, subjects })
+    expect(groupCatalogClasses(matching, subjects).map(g => [g.subject, g.classes.map(c => c.id)])).toEqual([["Gender & Women's Studies", ['cross']]])
   })
 })

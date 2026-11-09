@@ -1,5 +1,12 @@
 # LISTED — maintenance handoff
 
+## Compact Classes groups, November 9, 2026
+
+- Classes now defaults to subject groups with compact rows, keeping title/code, professor with their rating, meeting time, and course rating aligned. Explicit title and rating sorts remain flat lists. Narrow screens stack each row without a wide table.
+- Honors theses are hidden by default; a footer control restores matching theses with `theses=1`. The database and course detail pages are unchanged. Ordinary seminars remain visible.
+- Each cross-listed offering appears once. Its catalog subject is preferred for grouping; selecting another matching subject moves it under that selected heading. Non-major courses remain under Other courses.
+- TypeScript, changed-file ESLint, and all 64 tests pass, including default hiding, opt-in URL persistence, group membership, cross-list deduplication, and flat sorting. No imports or migrations are part of this UI update.
+
 ## Classes simplification, November 9, 2026
 
 - Replaced the subject select with a checkbox dropdown supporting any combination of the eight subjects; cross-listed courses still appear once. Legacy single-subject/category URLs remain compatible.

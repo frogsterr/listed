@@ -64,11 +64,12 @@ export interface CatalogFilters {
   earliest: string
   latest: string
   includeUnscheduled: boolean
-  sort: 'title' | 'rating'
+  showHonorsTheses: boolean
+  sort: 'subject' | 'title' | 'rating'
 }
 export const DEFAULT_CATALOG_FILTERS: CatalogFilters = {
   semester: CURRENT_SEMESTER, query: '', subjects: [], topic: '', days: [],
-  earliest: '', latest: '', includeUnscheduled: false, sort: 'title',
+  earliest: '', latest: '', includeUnscheduled: false, showHonorsTheses: false, sort: 'subject',
 }
 const validTime = (value: string | null) => value && /^([01]\d|2[0-3]):[0-5]\d$/.test(value) ? value : ''
 
@@ -83,7 +84,8 @@ export function readCatalogFilters(params: Pick<URLSearchParams, 'get'>): Catalo
     days: DAYS.filter(d => (params.get('days') ?? '').split(',').includes(d)),
     earliest: validTime(params.get('earliest')), latest: validTime(params.get('latest')),
     includeUnscheduled: params.get('unscheduled') === '1',
-    sort: params.get('sort') === 'rating' ? 'rating' : 'title',
+    showHonorsTheses: params.get('theses') === '1' || params.get('topic') === 'Honors Theses',
+    sort: params.get('sort') === 'rating' ? 'rating' : params.get('sort') === 'title' ? 'title' : 'subject',
   }
 }
 
@@ -97,7 +99,8 @@ export function catalogUrl(filters: CatalogFilters) {
   if (filters.earliest) params.set('earliest', filters.earliest)
   if (filters.latest) params.set('latest', filters.latest)
   if (filters.includeUnscheduled) params.set('unscheduled', '1')
-  if (filters.sort !== 'title') params.set('sort', filters.sort)
+  if (filters.showHonorsTheses) params.set('theses', '1')
+  if (filters.sort !== 'subject') params.set('sort', filters.sort)
   return `/classes${params.size ? `?${params}` : ''}`
 }
 
@@ -124,6 +127,7 @@ export function filterCatalogClasses(classes: PlannerClass[], filters: CatalogFi
   return classes.filter(course => {
     if (filters.semester !== 'all' && course.semester !== filters.semester) return false
     const taxonomy = catalogTaxonomy(course)
+    if (!filters.showHonorsTheses && taxonomy.topics.includes('Honors Theses')) return false
     if (filters.subjects.length && !taxonomy.subjects.some(s => filters.subjects.includes(s))) return false
     if (filters.topic && !taxonomy.topics.includes(filters.topic)) return false
     const search = normalize([course.title, ...(course.course_codes ?? []),
@@ -142,5 +146,24 @@ export function filterCatalogClasses(classes: PlannerClass[], filters: CatalogFi
       if (b.semester === CURRENT_SEMESTER) return 1
     }
     return a.title.localeCompare(b.title) || a.semester.localeCompare(b.semester) || a.id.localeCompare(b.id)
+  })
+}
+
+// One home per course keeps cross-listings from inflating counts. A selected
+// subject takes precedence, so a literature/gender course can live under either.
+export function groupCatalogClasses(classes: PlannerClass[], selectedSubjects: string[] = []) {
+  const groups = new Map<string, PlannerClass[]>()
+  for (const course of classes) {
+    const { subjects } = catalogTaxonomy(course)
+    const eligible = selectedSubjects.length ? subjects.filter(s => selectedSubjects.includes(s)) : subjects
+    const primary = SUBJECT_ALIASES[course.category ?? '']
+    const subject = eligible.find(subject => subject === primary) ?? eligible[0] ?? 'Other courses'
+    const rows = groups.get(subject) ?? []
+    rows.push(course)
+    groups.set(subject, rows)
+  }
+  return [...CATALOG_SUBJECTS, 'Other courses'].flatMap(subject => {
+    const rows = groups.get(subject)
+    return rows ? [{ subject, classes: rows }] : []
   })
 }
