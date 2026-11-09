@@ -145,7 +145,7 @@ export default function CourseCatalog({ classes }: { classes: PlannerClass[] }) 
             <div className="shrink-0 text-right"><Rating label="Course" stats={course.courseRating} prominent /><p className="text-[11px] font-medium text-gray-500">Course</p></div>
           </div>
           <div className="mb-5 mt-4 space-y-2">
-            {course.professorRatings.length > 0 ? course.professorRatings.map(({ professor, stats }) => <div key={professor.id} className="flex items-baseline justify-between gap-4"><Link href={`/professors/${professor.id}`} className="text-base font-semibold text-gray-800 hover:text-primary">{professor.name}</Link><Rating label={professor.name} stats={stats} /></div>)
+            {course.professorRatings.length > 0 ? course.professorRatings.map(({ professor, stats }) => <div key={professor.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1"><Link href={`/professors/${professor.id}`} className="text-base font-semibold text-gray-800 hover:text-primary">{professor.name}</Link><Rating label={professor.name} stats={stats} /></div>)
               : <p className="text-base font-semibold text-gray-700">{course.catalog_instructors?.join(' / ') || 'Professor TBA'}</p>}
           </div>
           <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
