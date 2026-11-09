@@ -100,7 +100,7 @@ export default function CourseCatalog({ classes }: { classes: PlannerClass[] }) 
   return <div className="mx-auto max-w-6xl px-4 py-7 sm:py-9">
     <div className="mb-5 flex items-center justify-between gap-4">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">Classes</h1>
-      <div className="relative w-44 shrink-0">
+      <div className="relative w-40 shrink-0 sm:w-44">
         <select aria-label="Semester" className={selectField} value={filters.semester} onChange={e => update({ semester: e.target.value, topic: '' })}>
           {semesters.map(s => <option key={s}>{s}</option>)}<option value="all">All semesters</option>
         </select><Chevron />
