@@ -1,5 +1,12 @@
 # LISTED — maintenance handoff
 
+## Classes simplification, November 9, 2026
+
+- Replaced the subject select with a checkbox dropdown supporting any combination of the eight subjects; cross-listed courses still appear once. Legacy single-subject/category URLs remain compatible.
+- Removed the Topic and More filters controls. Days and a dual-handle time slider are always visible, with the selected window shown above the track. Sliders support touch, mouse, and keyboard and cannot cross. Existing availability and TBA rules remain.
+- Inset every Classes dropdown chevron. Cards now show only a prominent title and course rating, each professor alongside their individual rating, the course tag, and meeting time. Historical rating aggregation is unchanged.
+- TypeScript, changed-file ESLint, and all 61 tests pass, including multi-subject selection and slider interaction regressions. Preview and production visual checks are part of publication. This is a UI change; do not rerun database imports or migrations.
+
 ## Classes browsing update, November 8, 2026
 
 - The owner approved a Spring-default Classes page with live title/code/professor search, an eight-subject selector, optional topics, and availability controls. The implementation lives in `CourseCatalog` and `lib/class-catalog.ts`.

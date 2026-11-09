@@ -47,7 +47,7 @@ describe('course catalog subjects and discovery', () => {
   it('finds one cross-listed course from either subject or compact course code', () => {
     const cross = buildPlannerClasses([course('golems', { title: 'Golems, Dybbuks & the Supernatural', category: 'Jewish Literature', course_codes: ['JGW 3530', 'LIT 3530'], catalog_instructors: ['Beverly J. Bailis', 'Sandra Fox'] })], [])
     for (const subject of ['Jewish Literature', "Gender & Women's Studies"]) {
-      expect(filterCatalogClasses(cross, { ...defaults, subject }).map(c => c.id)).toEqual(['golems'])
+      expect(filterCatalogClasses(cross, { ...defaults, subjects: [subject] }).map(c => c.id)).toEqual(['golems'])
     }
     for (const query of ['lit3530', 'JGW 3530', 'Sandra', 'Beverly J Bailis', 'golems supernatural']) {
       expect(filterCatalogClasses(cross, { ...defaults, query })).toHaveLength(1)
@@ -64,11 +64,21 @@ describe('course catalog subjects and discovery', () => {
     expect(filterCatalogClasses(extra, { ...defaults, topic: 'Seminars' })).toHaveLength(1)
   })
   it('preserves all filters in shareable URLs, including legacy category links', () => {
-    const filters = { ...defaults, semester: 'all', query: 'Jewish & modern', subject: 'Jewish History', topic: 'Modern Jewish Studies', days: ['Mon', 'Wed'], earliest: '09:30', latest: '16:00', includeUnscheduled: true, sort: 'rating' as const }
+    const filters = { ...defaults, semester: 'all', query: 'Jewish & modern', subjects: ['Bible', 'Jewish History'], topic: 'Modern Jewish Studies', days: ['Mon', 'Wed'], earliest: '09:30', latest: '16:00', includeUnscheduled: true, sort: 'rating' as const }
     expect(readCatalogFilters(new URL(catalogUrl(filters), 'https://julpa.org').searchParams)).toEqual(filters)
-    expect(readCatalogFilters(new URLSearchParams('category=Hebrew+Language')).subject).toBe('Hebrew')
+    expect(readCatalogFilters(new URLSearchParams('category=Hebrew+Language')).subjects).toEqual(['Hebrew'])
+    expect(readCatalogFilters(new URLSearchParams('subject=Jewish+History')).subjects).toEqual(['Jewish History'])
     expect(readCatalogFilters(new URLSearchParams('category=Liturgy')).topic).toBe('Prayer & Liturgy')
     expect(readCatalogFilters(new URLSearchParams('earliest=99:99&days=Mon,Fake')).days).toEqual(['Mon'])
     expect(readCatalogFilters(new URLSearchParams('earliest=99:99')).earliest).toBe('')
+  })
+  it('matches any selected subject without duplicating cross-listed offerings', () => {
+    const courses = buildPlannerClasses([
+      course('bible', { category: 'Bible' }), course('hebrew'),
+      course('cross', { category: 'Jewish Literature', course_codes: ['JGW 3530', 'LIT 3530'] }),
+    ], [])
+    const matches = filterCatalogClasses(courses, { ...defaults, subjects: ['Bible', 'Jewish Literature', "Gender & Women's Studies"] })
+    expect(matches.map(c => c.id).sort()).toEqual(['bible', 'cross'])
+    expect(readCatalogFilters(new URLSearchParams('subjects=Bible,Bible,Unknown,Hebrew')).subjects).toEqual(['Bible', 'Hebrew'])
   })
 })

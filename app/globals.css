@@ -7,3 +7,43 @@
     @apply bg-cream text-[#1a1a1a];
   }
 }
+
+/* Two native, keyboard-accessible handles share one visible time track. */
+.catalog-range {
+  position: absolute;
+  inset: 0 -12px;
+  width: calc(100% + 24px);
+  height: 40px;
+  margin: 0;
+  appearance: none;
+  pointer-events: none;
+  background: transparent;
+}
+.catalog-range::-webkit-slider-runnable-track { background: transparent; }
+.catalog-range::-moz-range-track { background: transparent; }
+.catalog-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #d36b27;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 4px #0002;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+}
+.catalog-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #d36b27;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 4px #0002;
+  pointer-events: auto;
+  cursor: grab;
+}
+.catalog-range:focus-visible { outline: none; }
+.catalog-range:focus-visible::-webkit-slider-thumb { outline: 3px solid #1a1a1a; outline-offset: 3px; }
+.catalog-range:focus-visible::-moz-range-thumb { outline: 3px solid #1a1a1a; outline-offset: 3px; }
+.catalog-range:active::-webkit-slider-thumb { cursor: grabbing; }
