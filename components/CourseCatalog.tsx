@@ -159,14 +159,14 @@ export default function CourseCatalog({ classes }: { classes: PlannerClass[] }) 
       {filters.topic && <button onClick={() => update({ topic: '' })} className="mt-3 text-xs text-primary" aria-label={`Remove ${filters.topic}`}>{filters.topic} ×</button>}
     </div>
 
-    <div className="my-5 flex items-center justify-between gap-3">
+    <div className="my-5 flex flex-wrap items-center justify-between gap-3">
       <div className="flex items-center gap-4"><p role="status" aria-live="polite" className="text-sm font-semibold text-gray-800">{results.length} {results.length === 1 ? 'course' : 'courses'}</p>{hasFilters && <button onClick={clearFilters} className="text-xs text-gray-600 underline underline-offset-2">Clear filters</button>}</div>
       <div className="relative w-40 shrink-0"><select aria-label="Sort classes" className={`${field} appearance-none py-2 pl-4 pr-12 text-sm font-medium`} value={filters.sort} onChange={e => update({ sort: e.target.value as CatalogFilters['sort'] })}><option value="subject">By subject</option><option value="title">Title A–Z</option><option value="rating">Highest rated</option></select><Chevron /></div>
     </div>
 
     {!results.length ? <div className="rounded-xl border border-cream-border bg-white px-5 py-10 text-center"><h2 className="font-semibold text-gray-900">No matching courses</h2><button onClick={clearFilters} className="mt-3 text-sm text-primary underline">Clear filters</button></div>
       : <div>
-        <div aria-hidden="true" className={`mb-2 hidden gap-x-4 px-4 text-[11px] font-semibold text-gray-500 md:grid ${rowColumns}`}><span>Course</span><span>Professor</span><span>Time</span><span className="text-right">Course rating</span></div>
+        <div aria-hidden="true" className={`mb-2 hidden gap-x-4 px-4 text-[11px] font-semibold text-gray-500 md:grid ${rowColumns}`}><span>Course</span><span>Professor</span><span>Time</span><span className="whitespace-nowrap text-right">Course rating</span></div>
         <div className="space-y-3">{groups.map(group => <section key={group.subject || 'all'} aria-label={group.subject || 'Courses'} className="overflow-hidden rounded-xl border border-cream-border bg-white">
           {group.subject && <h2 className="flex items-center gap-2 border-b border-cream-border bg-cream/60 px-4 py-2 text-sm font-bold text-gray-800">{group.subject}<span className="text-xs font-normal text-gray-500">{group.classes.length}</span></h2>}
           <div className="divide-y divide-cream-border">{group.classes.map(course => <CourseRow key={course.id} course={course} showSemester={filters.semester === 'all'} grouped={Boolean(group.subject)} />)}</div>
