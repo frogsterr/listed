@@ -1,6 +1,8 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import CourseCatalog from '@/components/CourseCatalog'
+import { buildPlannerClasses } from '@/lib/course-planner'
+import type { Class } from '@/lib/types'
 
 vi.mock('next/navigation', async () => {
   const { useSyncExternalStore } = await import('react')
@@ -60,4 +62,29 @@ describe('catalog controls', () => {
     expect(screen.queryByRole('checkbox', { name: 'Include time TBA' })).not.toBeInTheDocument()
     expect(window.location.search).toBe('?subjects=Bible')
   })
+})
+
+
+it('opens in subject groups with theses hidden and allows explicit expansion and flat sorting', () => {
+  const course = (id: string, title: string, category: string): Class => ({
+    id, title, category, semester: 'Spring 2027', professor_id: null, created_at: '',
+    meeting_days: ['Mon'], start_time: '10:00:00', end_time: '11:00:00',
+  })
+  render(<CourseCatalog classes={buildPlannerClasses([
+    course('bible', 'Bible Course', 'Bible'), course('hebrew', 'Hebrew Course', 'Hebrew'),
+    course('thesis', 'Honors Thesis (BIB)', 'Bible'),
+  ], [])} />)
+  expect(screen.getByRole('combobox', { name: 'Sort classes' })).toHaveValue('subject')
+  expect(screen.getByRole('region', { name: 'Bible' })).toBeInTheDocument()
+  expect(screen.getAllByRole('article')).toHaveLength(2)
+  expect(screen.queryByRole('link', { name: 'Honors Thesis (BIB)' })).not.toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: 'Show honors theses (1)' }))
+  expect(screen.getByRole('link', { name: 'Honors Thesis (BIB)' })).toBeInTheDocument()
+  expect(new URLSearchParams(window.location.search).get('theses')).toBe('1')
+  fireEvent.click(screen.getByRole('button', { name: 'Hide honors theses' }))
+  expect(screen.getAllByRole('article')).toHaveLength(2)
+  fireEvent.change(screen.getByRole('combobox', { name: 'Sort classes' }), { target: { value: 'title' } })
+  expect(screen.queryByRole('region', { name: 'Bible' })).not.toBeInTheDocument()
+  expect(screen.getByRole('region', { name: 'Courses' })).toBeInTheDocument()
+  expect(screen.getAllByRole('article')).toHaveLength(2)
 })
