@@ -58,7 +58,7 @@ export function catalogTaxonomy(course: Pick<Class, 'title' | 'category' | 'cour
 export interface CatalogFilters {
   semester: string
   query: string
-  subject: string
+  subjects: string[]
   topic: string
   days: string[]
   earliest: string
@@ -67,17 +67,18 @@ export interface CatalogFilters {
   sort: 'title' | 'rating'
 }
 export const DEFAULT_CATALOG_FILTERS: CatalogFilters = {
-  semester: CURRENT_SEMESTER, query: '', subject: '', topic: '', days: [],
+  semester: CURRENT_SEMESTER, query: '', subjects: [], topic: '', days: [],
   earliest: '', latest: '', includeUnscheduled: false, sort: 'title',
 }
 const validTime = (value: string | null) => value && /^([01]\d|2[0-3]):[0-5]\d$/.test(value) ? value : ''
 
 export function readCatalogFilters(params: Pick<URLSearchParams, 'get'>): CatalogFilters {
   const legacy = params.get('category') ?? ''
+  const subjects = (params.get('subjects') ?? params.get('subject') ?? SUBJECT_ALIASES[legacy] ?? '').split(',')
   return {
     semester: params.get('semester') || CURRENT_SEMESTER,
     query: params.get('q') ?? '',
-    subject: params.get('subject') ?? SUBJECT_ALIASES[legacy] ?? '',
+    subjects: CATALOG_SUBJECTS.filter(subject => subjects.includes(subject)),
     topic: params.get('topic') ?? TOPIC_ALIASES[legacy] ?? '',
     days: DAYS.filter(d => (params.get('days') ?? '').split(',').includes(d)),
     earliest: validTime(params.get('earliest')), latest: validTime(params.get('latest')),
@@ -90,7 +91,7 @@ export function catalogUrl(filters: CatalogFilters) {
   const params = new URLSearchParams()
   if (filters.semester !== CURRENT_SEMESTER) params.set('semester', filters.semester)
   if (filters.query) params.set('q', filters.query)
-  if (filters.subject) params.set('subject', filters.subject)
+  if (filters.subjects.length) params.set('subjects', filters.subjects.join(','))
   if (filters.topic) params.set('topic', filters.topic)
   if (filters.days.length) params.set('days', filters.days.join(','))
   if (filters.earliest) params.set('earliest', filters.earliest)
@@ -123,7 +124,7 @@ export function filterCatalogClasses(classes: PlannerClass[], filters: CatalogFi
   return classes.filter(course => {
     if (filters.semester !== 'all' && course.semester !== filters.semester) return false
     const taxonomy = catalogTaxonomy(course)
-    if (filters.subject && !taxonomy.subjects.some(s => s === filters.subject)) return false
+    if (filters.subjects.length && !taxonomy.subjects.some(s => filters.subjects.includes(s))) return false
     if (filters.topic && !taxonomy.topics.includes(filters.topic)) return false
     const search = normalize([course.title, ...(course.course_codes ?? []),
       ...classProfessors(course).map(p => p.name), ...(course.catalog_instructors ?? []),
