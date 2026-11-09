@@ -1,5 +1,13 @@
 # LISTED — maintenance handoff
 
+## Classes browsing update, November 8, 2026
+
+- The owner approved a Spring-default Classes page with live title/code/professor search, an eight-subject selector, optional topics, and availability controls. The implementation lives in `CourseCatalog` and `lib/class-catalog.ts`.
+- Subject aliases are normalized for display/filtering; catalog rows and review records are unchanged. Cross-listings match either discipline. Period-based departments supplement explicit disciplines instead of overriding them. The older mislabeled MDS thesis is presented as interdisciplinary; Liturgy, Music, Professional Studies, and Seminars remain discoverable through optional topics and All subjects.
+- Every known meeting must fit the selected available weekdays and inclusive start/finish bounds. Unposted schedules are included with no availability filters and excluded when availability is set unless explicitly included. Known schedule details still constrain partially posted courses.
+- Filters persist in URLs through the supported Next.js native history integration. Legacy `q` and category links work, both 2026 semesters and All semesters remain available, and every course links to its existing page with historical reviews. Ratings use the existing planner aggregation across terms.
+- All 58 tests and TypeScript checks passed. Local browser preview could not start because the sandbox denies listening on localhost; hosted deployment and browser checks are required for final verification. No database migration/import is needed.
+
 ## Spring 2027 maintenance, November 8, 2026
 
 Working checkout: `/Users/benshv/Documents/Codex/2026-11-08/new-chat/listed`, branch `update/spring-2027`. Original checkout `/Users/benshv/listed` is unchanged. Base commit is `faeffcd61df501635de16d6733a7ee67222812d3`, also confirmed as the current GitHub master head in the browser.
